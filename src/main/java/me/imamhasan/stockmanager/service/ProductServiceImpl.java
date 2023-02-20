@@ -1,6 +1,5 @@
 package me.imamhasan.stockmanager.service;
 
-import me.imamhasan.stockmanager.exception.NotFoundException;
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
     }
 
     @Override
@@ -35,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
+
         return productRepository.save(product);
     }
 

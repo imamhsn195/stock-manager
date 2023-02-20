@@ -1,7 +1,5 @@
 package me.imamhasan.stockmanager.service;
 
-import me.imamhasan.stockmanager.exception.NotFoundException;
-import me.imamhasan.stockmanager.exception.ProductNotFoundException;
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.repository.ProductRepository;
 import org.junit.Assert;
@@ -61,7 +59,7 @@ public class ProductServiceImplTest {
         Assert.assertEquals(new BigDecimal("10.00"), product.getPrice());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetProductByIdNotFound() {
         productService.getProductById(999L);
     }
@@ -87,7 +85,7 @@ public class ProductServiceImplTest {
         Assert.assertEquals(new BigDecimal("11.00"), savedProduct.getPrice());
     }
 
-    @Test(expected = ProductNotFoundException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testUpdateProductNotFound() {
         // Create a product with a known id and some other properties
         Long id = 1L;
@@ -107,7 +105,7 @@ public class ProductServiceImplTest {
         Mockito.verify(productRepository, Mockito.times(1)).deleteById(1L);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testDeleteProductNotFound() {
         productService.deleteProduct(999L);
     }

@@ -2,10 +2,9 @@ package me.imamhasan.stockmanager.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,13 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 @Api(value = "Product Management System", description = "Operations pertaining to product in Product Management System")
+@RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
 
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @ApiOperation(value = "View a list of available products", response = List.class)
     @GetMapping
@@ -35,11 +31,12 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @ApiOperation(value = "Create a new product", response = Product.class)
-    @ApiParam(value = "Details of the product to create", required = true)
+//    @ApiOperation(value = "Create a new product", response = Product.class)
+//    @ApiParam(value = "Details of the product to create", required = true)
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseStatus(HttpStatus.CREATED)
     public Product addProduct(@Valid @RequestBody Product product) {
+        System.out.println("aaa");
         return productService.addProduct(product);
     }
 
@@ -48,6 +45,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
         product.setId(id);
+        System.out.println(product);
         return productService.updateProduct(product);
     }
 

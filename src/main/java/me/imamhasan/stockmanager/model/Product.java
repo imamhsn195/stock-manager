@@ -18,8 +18,11 @@ public class Product {
     private Long id;
 
     @NotBlank(message = "Name is required")
+    @Size(min = 1, max = 255)
     private String name;
 
+    @NotBlank(message = "Description is required")
+    @Size(min = 1, max = 1000)
     private String description;
 
     @NotNull(message = "Price is required")
