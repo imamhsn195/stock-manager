@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,6 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-
     @ApiOperation(value = "Get a product by ID", response = Product.class)
     @ApiParam(value = "ID of the product to retrieve", required = true)
     @GetMapping("/{id}")
@@ -39,15 +39,14 @@ public class ProductController {
     @ApiParam(value = "Details of the product to create", required = true)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product addProduct(@RequestBody Product product) {
+    public Product addProduct(@Valid @RequestBody Product product) {
         return productService.addProduct(product);
     }
-
 
     @ApiOperation(value = "Update an existing product", response = Product.class)
     @ApiParam(value = "ID of the product to update", required = true)
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
         product.setId(id);
         return productService.updateProduct(product);
     }
