@@ -1,0 +1,237 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ApplicationExceptionHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">me.imamhasan.stockmanager.exception</a>
+</div>
+
+<h1>Coverage Summary for Class: ApplicationExceptionHandler (me.imamhasan.stockmanager.exception)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ApplicationExceptionHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2%
+  </span>
+  <span class="absValue">
+    (1/49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package me.imamhasan.stockmanager.exception;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.converter.HttpMessageNotReadableException;
+&nbsp;import org.springframework.web.bind.MethodArgumentNotValidException;
+&nbsp;import org.springframework.web.bind.MissingServletRequestParameterException;
+&nbsp;import org.springframework.web.bind.annotation.ExceptionHandler;
+&nbsp;import org.springframework.web.bind.annotation.ResponseStatus;
+&nbsp;import org.springframework.web.bind.annotation.RestControllerAdvice;
+&nbsp;import org.springframework.web.client.HttpClientErrorException;
+&nbsp;import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+&nbsp;
+&nbsp;import javax.persistence.EntityNotFoundException;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;@RestControllerAdvice
+<b class="fc">&nbsp;public class ApplicationExceptionHandler {</b>
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(MethodArgumentNotValidException.class)
+&nbsp;    public Map&lt;String, String&gt; handleInvalidArgument(MethodArgumentNotValidException ex) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        ex.getBindingResult().getFieldErrors().forEach(error -&gt; {</b>
+<b class="nc">&nbsp;            errorMap.put(error.getField(), error.getDefaultMessage());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        System.out.println(&quot;1111111111111&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(javax.validation.ValidationException.class)
+&nbsp;    public Map&lt;String, String&gt; handleValidationArgument(javax.validation.ValidationException ex) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, ex.getMessage());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;22222222222222&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(java.sql.SQLIntegrityConstraintViolationException.class)
+&nbsp;        public Map&lt;String, String&gt; handleException(java.sql.SQLIntegrityConstraintViolationException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;3333333333333&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(org.springframework.validation.BindException.class)
+&nbsp;    public Map&lt;String, String&gt; handleBindException(org.springframework.validation.BindException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        exception.getBindingResult().getFieldErrors().forEach(error -&gt; {</b>
+<b class="nc">&nbsp;            errorMap.put(error.getField(), error.getDefaultMessage());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        System.out.println(&quot;4444444444444444&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+&nbsp;    public Map&lt;String, String&gt; handleBindException(MethodArgumentTypeMismatchException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;55555555555&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(MissingServletRequestParameterException.class)
+&nbsp;    public Map&lt;String, String&gt; handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;55555555555&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.BAD_REQUEST)
+&nbsp;    @ExceptionHandler(NoSuchElementException.class)
+&nbsp;    public Map&lt;String, String&gt; handleNoSuchElementException(NoSuchElementException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;55555555555&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+&nbsp;    @ExceptionHandler(HttpMessageNotReadableException.class)
+&nbsp;    public Map&lt;String, String&gt; handleException(HttpMessageNotReadableException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;5555555555555555555555&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+&nbsp;    @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
+&nbsp;    public Map&lt;String, String&gt; handel(HttpClientErrorException.Unauthorized ex) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;,&quot;invalid credentials&quot;);</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+&nbsp;    @ExceptionHandler(HttpClientErrorException.Conflict.class)
+&nbsp;    public Map&lt;String, String&gt; handel(HttpClientErrorException.Conflict ex) throws JsonProcessingException {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;        Map&lt;String,Object&gt; map = mapper.readValue(ex.getResponseBodyAsString(), Map.class);</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, (String) map.get(&quot;errorMessage&quot;));</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+&nbsp;    @ExceptionHandler(EntityNotFoundException.class)
+&nbsp;    public Map&lt;String, String&gt; handleEntityNotFoundException(EntityNotFoundException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+&nbsp;    @ExceptionHandler(IllegalStateException.class)
+&nbsp;    public Map&lt;String, String&gt; handleIllegalStateException(IllegalStateException exception) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; errorMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        errorMap.put(&quot;message&quot;, exception.getMessage());</b>
+<b class="nc">&nbsp;        return errorMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-20 17:35</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+ALTER TABLE product ADD pictureUrl VARCHAR(255);

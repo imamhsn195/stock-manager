@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">me.imamhasan.stockmanager.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductController (me.imamhasan.stockmanager.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package me.imamhasan.stockmanager.controller;
+&nbsp;
+&nbsp;import io.swagger.annotations.Api;
+&nbsp;import io.swagger.annotations.ApiOperation;
+&nbsp;import io.swagger.annotations.ApiParam;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import me.imamhasan.stockmanager.model.Product;
+&nbsp;import me.imamhasan.stockmanager.service.ProductService;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/products&quot;)
+&nbsp;@Api(value = &quot;Product Management System&quot;, description = &quot;Operations pertaining to product in Product Management System&quot;)
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class ProductController {
+&nbsp;    private final ProductService productService;
+&nbsp;
+&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;getAllProducts&#39;)&quot;)
+&nbsp;    @ApiOperation(value = &quot;View a list of available products&quot;, response = List.class)
+&nbsp;    @GetMapping
+&nbsp;    public List&lt;Product&gt; getAllProducts() {
+<b class="nc">&nbsp;        return productService.getAllProducts();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;getProduct&#39;)&quot;)
+&nbsp;    @ApiOperation(value = &quot;Get a product by ID&quot;, response = Product.class)
+&nbsp;    @ApiParam(value = &quot;ID of the product to retrieve&quot;, required = true)
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public Product getProductById(@PathVariable Long id) {
+<b class="nc">&nbsp;        return productService.getProductById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;storeProduct&#39;)&quot;)
+&nbsp;    @ApiOperation(value = &quot;Create a new product&quot;, response = Product.class)
+&nbsp;    @ApiParam(value = &quot;Details of the product to create&quot;, required = true)
+&nbsp;    @PostMapping
+&nbsp;    @ResponseStatus(HttpStatus.CREATED)
+&nbsp;    public Product addProduct(@Valid @RequestBody Product product) {
+<b class="nc">&nbsp;        return productService.addProduct(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;updateProduct&#39;)&quot;)
+&nbsp;    @ApiOperation(value = &quot;Update an existing product&quot;, response = Product.class)
+&nbsp;    @ApiParam(value = &quot;ID of the product to update&quot;, required = true)
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
+<b class="nc">&nbsp;        product.setId(id);</b>
+<b class="nc">&nbsp;        return productService.updateProduct(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;deleteProduct&#39;)&quot;)
+&nbsp;    @ApiOperation(value = &quot;Delete a product by ID&quot;)
+&nbsp;    @ApiParam(value = &quot;ID of the product to delete&quot;, required = true)
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    public void deleteProduct(@PathVariable Long id) {
+<b class="nc">&nbsp;        productService.deleteProduct(id);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-20 17:34</div>
+</div>
+</body>
+</html>
