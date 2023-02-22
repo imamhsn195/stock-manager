@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@Api(value = "Product Management System", description = "Operations pertaining to product in Product Management System")
+@Api(value = "Product Management System", tags = { "Product"}, description = "Operations pertaining to product in Product Management System")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;

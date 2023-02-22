@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import me.imamhasan.stockmanager.model.Supplier;
-import me.imamhasan.stockmanager.service.SupplierService;
+import me.imamhasan.stockmanager.model.Address;
+import me.imamhasan.stockmanager.service.AddressService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,74 +14,73 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/suppliers")
-@Api(value = "Supplier Management System", tags = { "Suppliers" })
+@RequestMapping("/api/addresses")
+@Api(value = "Address Management System", tags = { "Address" }, description = "Operations pertaining to address in Address Management System")
 @RequiredArgsConstructor
-public class SupplierController {
+public class AddressController {
 
-    private final SupplierService supplierService;
+    private final AddressService addressService;
 
     @GetMapping
-    @ApiOperation(value = "Get all suppliers")
+    @ApiOperation(value = "Get all addresses")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved suppliers"),
+            @ApiResponse(code = 200, message = "Successfully retrieved addresses"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public List<Supplier> getAllSuppliers() {
-        return supplierService.getAllSuppliers();
+    public List<Address> getAllAddresses() {
+        return addressService.getAllAddresses();
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get supplier by id")
+    @ApiOperation(value = "Get address by id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved supplier"),
+            @ApiResponse(code = 200, message = "Successfully retrieved address"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public Supplier getSupplierById(@PathVariable Long id) {
-        return supplierService.getSupplierById(id);
+    public Address getAddressById(@PathVariable Long id) {
+        return addressService.getAddressById(id);
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new supplier")
+    @ApiOperation(value = "Add a new address")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully added supplier"),
+            @ApiResponse(code = 201, message = "Successfully added address"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> addSupplier(@RequestBody Supplier supplier) {
-        System.out.println(supplier.getAddress());
-        supplierService.saveSupplier(supplier);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Supplier added successfully");
+    public ResponseEntity<?> addAddress(@RequestBody Address address) {
+        addressService.saveAddress(address);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Address added successfully");
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing supplier")
+    @ApiOperation(value = "Update an existing address")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated supplier"),
+            @ApiResponse(code = 200, message = "Successfully updated address"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
-        supplierService.updateSupplier(id, supplier);
-        return ResponseEntity.ok("Supplier updated successfully");
+    public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody Address address) {
+        addressService.updateAddress(id, address);
+        return ResponseEntity.ok("Address updated successfully");
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete an existing supplier")
+    @ApiOperation(value = "Delete an existing address")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deleted supplier"),
+            @ApiResponse(code = 200, message = "Successfully deleted address"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> deleteSupplier(@PathVariable Long id) {
-        supplierService.deleteSupplier(id);
-        return ResponseEntity.ok("Supplier deleted successfully");
+    public ResponseEntity<?> deleteAddress(@PathVariable Long id) {
+        addressService.deleteAddress(id);
+        return ResponseEntity.ok("Address deleted successfully");
     }
 }

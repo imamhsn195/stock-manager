@@ -1,40 +1,41 @@
 package me.imamhasan.stockmanager.service;
 
 import lombok.AllArgsConstructor;
-import me.imamhasan.stockmanager.model.Product;
-import me.imamhasan.stockmanager.repository.ProductRepository;
+import me.imamhasan.stockmanager.model.Address;
+import me.imamhasan.stockmanager.repository.AddressRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @AllArgsConstructor
 @Service
-public class ProductServiceImpl implements ProductService {
-    private final ProductRepository productRepository;
+public class AddressServiceImpl implements AddressService {
+    private final AddressRepository addressRepository;
+
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Address saveAddress(Address address) {
+        return addressRepository.save(address);
     }
 
     @Override
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+    public List<Address> getAllAddresses() {
+        return addressRepository.findAll();
     }
 
     @Override
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
+    public Address getAddressById(Long addressId) {
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new IllegalStateException("Address with id:  ${addressId} not found"));
     }
 
     @Override
-    public Product updateProduct(Product product) {
-
-        return productRepository.save(product);
+    public void deleteAddress(Long addressId) {
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new IllegalStateException("Address with id:  ${addressId} not found"));
+        addressRepository.delete(address);
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public Address updateAddress(Long id, Address address) {
+        return null;
     }
 }

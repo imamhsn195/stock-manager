@@ -1,15 +1,14 @@
 package me.imamhasan.stockmanager.service;
 
-import me.imamhasan.stockmanager.model.Product;
-import me.imamhasan.stockmanager.model.Supplier;
+import me.imamhasan.stockmanager.model.Address;
 
 import java.util.List;
 
 
-public interface SupplierService {
-    Supplier saveSupplier(Supplier supplier);
-    List<Supplier> getAllSuppliers();
-    Supplier getSupplierById(Long supplierId);
-    void deleteSupplier(Long supplierId);
-    Supplier updateSupplier(Long id, Supplier supplier);
+public interface AddressService {
+    Address saveAddress(Address address);
+    List<Address> getAllAddresses();
+    Address getAddressById(Long addressId);
+    void deleteAddress(Long addressId);
+    Address updateAddress(Long id, Address address);
 }
