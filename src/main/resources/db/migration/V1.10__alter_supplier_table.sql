@@ -1,0 +1,2 @@
+ALTER TABLE supplier DROP COLUMN contact_info;
+ALTER TABLE supplier ADD COLUMN email VARCHAR(255) NOT NULL;
