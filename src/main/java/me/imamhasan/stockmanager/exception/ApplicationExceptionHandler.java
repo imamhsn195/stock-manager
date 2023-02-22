@@ -26,7 +26,7 @@ public class ApplicationExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
-        System.out.println("1111111111111");
+//        System.out.println("1111111111111");
         return errorMap;
     }
 
@@ -35,7 +35,7 @@ public class ApplicationExceptionHandler {
     public Map<String, String> handleValidationArgument(javax.validation.ValidationException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", ex.getMessage());
-        System.out.println("22222222222222");
+//        System.out.println("22222222222222");
         return errorMap;
     }
 
@@ -45,7 +45,7 @@ public class ApplicationExceptionHandler {
         public Map<String, String> handleException(java.sql.SQLIntegrityConstraintViolationException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", exception.getMessage());
-        System.out.println("3333333333333");
+//        System.out.println("3333333333333");
         return errorMap;
         }
 
@@ -56,7 +56,7 @@ public class ApplicationExceptionHandler {
         exception.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
-        System.out.println("4444444444444444");
+//        System.out.println("4444444444444444");
         return errorMap;
     }
 
@@ -65,7 +65,7 @@ public class ApplicationExceptionHandler {
     public Map<String, String> handleBindException(MethodArgumentTypeMismatchException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", exception.getMessage());
-        System.out.println("55555555555");
+//        System.out.println("55555555555");
         return errorMap;
     }
 
@@ -74,7 +74,7 @@ public class ApplicationExceptionHandler {
     public Map<String, String> handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", exception.getMessage());
-        System.out.println("55555555555");
+//        System.out.println("55555555555");
         return errorMap;
     }
 
@@ -83,7 +83,7 @@ public class ApplicationExceptionHandler {
     public Map<String, String> handleNoSuchElementException(NoSuchElementException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", exception.getMessage());
-        System.out.println("55555555555");
+//        System.out.println("55555555555");
         return errorMap;
     }
 
@@ -92,7 +92,7 @@ public class ApplicationExceptionHandler {
     public Map<String, String> handleException(HttpMessageNotReadableException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", exception.getMessage());
-        System.out.println("5555555555555555555555");
+//        System.out.println("5555555555555555555555");
         return errorMap;
     }
 

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > ProductServiceImpl</title>
+  <title>Coverage Report > AddressServiceImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">me.imamhasan.stockmanager.service</a>
 </div>
 
-<h1>Coverage Summary for Class: ProductServiceImpl (me.imamhasan.stockmanager.service)</h1>
+<h1>Coverage Summary for Class: AddressServiceImpl (me.imamhasan.stockmanager.service)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -40,7 +40,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">ProductServiceImpl</td>
+  <td class="name">AddressServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    16.7%
+    100%
   </span>
   <span class="absValue">
-    (1/6)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    25%
+    100%
   </span>
   <span class="absValue">
-    (2/8)
+    (11/11)
   </span>
 </td>
 </tr>
@@ -76,47 +76,45 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package me.imamhasan.stockmanager.service;
 &nbsp;
-&nbsp;import me.imamhasan.stockmanager.model.Product;
-&nbsp;import me.imamhasan.stockmanager.repository.ProductRepository;
-&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import me.imamhasan.stockmanager.model.Address;
+&nbsp;import me.imamhasan.stockmanager.repository.AddressRepository;
 &nbsp;import org.springframework.stereotype.Service;
 &nbsp;
 &nbsp;import java.util.List;
-&nbsp;
+<b class="fc">&nbsp;@AllArgsConstructor</b>
 &nbsp;@Service
-&nbsp;public class ProductServiceImpl implements ProductService {
-&nbsp;    private final ProductRepository productRepository;
+&nbsp;public class AddressServiceImpl implements AddressService {
+&nbsp;    private final AddressRepository addressRepository;
 &nbsp;
-&nbsp;    @Autowired
-<b class="fc">&nbsp;    public ProductServiceImpl(ProductRepository productRepository) {</b>
-<b class="fc">&nbsp;        this.productRepository = productRepository;</b>
+&nbsp;    @Override
+&nbsp;    public Address saveAddress(Address address) {
+<b class="fc">&nbsp;        return addressRepository.save(address);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
-&nbsp;    public List&lt;Product&gt; getAllProducts() {
-<b class="nc">&nbsp;        return productRepository.findAll();</b>
+&nbsp;    public List&lt;Address&gt; getAllAddresses() {
+<b class="fc">&nbsp;        return addressRepository.findAll();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
-&nbsp;    public Product getProductById(Long id) {
-<b class="nc">&nbsp;        return productRepository.findById(id)</b>
-<b class="nc">&nbsp;                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Product not found&quot;));</b>
+&nbsp;    public Address getAddressById(Long addressId) {
+<b class="fc">&nbsp;        return addressRepository.findById(addressId)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new IllegalStateException(&quot;Address with id &quot; + addressId + &quot; not found&quot;));</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
-&nbsp;    public Product addProduct(Product product) {
-<b class="nc">&nbsp;        return productRepository.save(product);</b>
+&nbsp;    public void deleteAddress(Long addressId) {
+<b class="fc">&nbsp;        Address address = addressRepository.findById(addressId)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new IllegalStateException(&quot;Address with id &quot; + addressId + &quot; not found&quot;));</b>
+<b class="fc">&nbsp;        addressRepository.delete(address);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
-&nbsp;    public Product updateProduct(Product product) {
-&nbsp;
-<b class="nc">&nbsp;        return productRepository.save(product);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    @Override
-&nbsp;    public void deleteProduct(Long id) {
-<b class="nc">&nbsp;        productRepository.deleteById(id);</b>
+&nbsp;    public Address updateAddress(Address address) {
+<b class="fc">&nbsp;        addressRepository.findById(address.getId())</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new IllegalStateException(&quot;Address with id &quot; + address.getId() + &quot; not found&quot;));</b>
+<b class="fc">&nbsp;        return addressRepository.save(address);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -142,7 +140,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-20 17:35</div>
+    <div style="float:right;">generated on 2023-02-22 18:15</div>
 </div>
 </body>
 </html>

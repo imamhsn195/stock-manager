@@ -1,0 +1,189 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">me.imamhasan.stockmanager.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductController (me.imamhasan.stockmanager.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package me.imamhasan.stockmanager.controller;
+&nbsp;import io.swagger.annotations.*;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import me.imamhasan.stockmanager.model.Product;
+&nbsp;import me.imamhasan.stockmanager.service.ProductService;
+&nbsp;import me.imamhasan.stockmanager.service.ProductServiceImpl;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/products&quot;)
+&nbsp;@Api(value = &quot;Product Management System&quot;, tags = { &quot;Products&quot;}, description = &quot;Operations pertaining to product in Product Management System&quot;)
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class ProductController {
+&nbsp;    private final ProductServiceImpl productService;
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping
+&nbsp;    @ApiOperation(value = &quot;Get all products&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully retrieved products&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public List&lt;Product&gt; getAllProducts() {
+<b class="nc">&nbsp;        return productService.getAllProducts();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    @ApiParam(value = &quot;ID of the product to retrieve&quot;, required = true)
+&nbsp;    @ApiOperation(value = &quot;Get product by id&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully retrieved product&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public Product getProductById(@PathVariable Long id) {
+<b class="nc">&nbsp;        return productService.getProductById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping
+&nbsp;    @ApiParam(value = &quot;Details of the product to create&quot;, required = true)
+&nbsp;    @ApiOperation(value = &quot;Add a new product&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 201, message = &quot;Successfully added product&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    @ResponseStatus(HttpStatus.CREATED)
+&nbsp;    public Product addProduct(@Valid @RequestBody Product product) {
+<b class="nc">&nbsp;        return productService.addProduct(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    @ApiParam(value = &quot;ID of the product to update&quot;, required = true)
+&nbsp;    @ApiOperation(value = &quot;Update an existing product&quot;, response = Product.class)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully updated product&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
+<b class="nc">&nbsp;        product.setId(id);</b>
+<b class="nc">&nbsp;        return productService.updateProduct(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @ApiParam(value = &quot;ID of the product to delete&quot;, required = true)
+&nbsp;    @ApiOperation(value = &quot;Delete a product by ID&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully deleted product&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public void deleteProduct(@PathVariable Long id) {
+<b class="nc">&nbsp;        productService.deleteProduct(id);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-22 18:15</div>
+</div>
+</body>
+</html>

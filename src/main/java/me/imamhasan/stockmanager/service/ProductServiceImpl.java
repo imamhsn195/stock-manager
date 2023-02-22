@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new IllegalStateException("Product with id " + id + " not found."));
     }
 
     @Override
@@ -29,12 +29,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
-
+        productRepository.findById(product.getId()).orElseThrow(() -> new IllegalStateException("Product with id " + product.getId() + ""));
         return productRepository.save(product);
     }
 
     @Override
     public void deleteProduct(Long id) {
+        productRepository.findById(id).orElseThrow(() -> new IllegalStateException("Product with id " + id + ""));
         productRepository.deleteById(id);
     }
 }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import me.imamhasan.stockmanager.model.Supplier;
 import me.imamhasan.stockmanager.service.SupplierService;
+import me.imamhasan.stockmanager.service.SupplierServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SupplierController {
 
-    private final SupplierService supplierService;
+    private final SupplierServiceImpl supplierService;
 
     @GetMapping
     @ApiOperation(value = "Get all suppliers")
@@ -55,7 +56,6 @@ public class SupplierController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     public ResponseEntity<?> addSupplier(@Valid @RequestBody Supplier supplier) {
-        System.out.println("Supplier Address: " + supplier.getAddress());
         supplierService.saveSupplier(supplier);
         return ResponseEntity.status(HttpStatus.CREATED).body("Supplier added successfully");
     }
@@ -69,7 +69,8 @@ public class SupplierController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     public ResponseEntity<?> updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
-        supplierService.updateSupplier(id, supplier);
+        supplier.setId(id);
+        supplierService.updateSupplier(supplier);
         return ResponseEntity.ok("Supplier updated successfully");
     }
 

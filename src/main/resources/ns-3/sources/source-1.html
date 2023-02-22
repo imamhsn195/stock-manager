@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > ProductController</title>
+  <title>Coverage Report > AddressController</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">me.imamhasan.stockmanager.controller</a>
 </div>
 
-<h1>Coverage Summary for Class: ProductController (me.imamhasan.stockmanager.controller)</h1>
+<h1>Coverage Summary for Class: AddressController (me.imamhasan.stockmanager.controller)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -40,7 +40,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">ProductController</td>
+  <td class="name">AddressController</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -59,10 +59,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    14.3%
+    11.1%
   </span>
   <span class="absValue">
-    (1/7)
+    (1/9)
   </span>
 </td>
 </tr>
@@ -78,62 +78,86 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;import io.swagger.annotations.Api;
 &nbsp;import io.swagger.annotations.ApiOperation;
-&nbsp;import io.swagger.annotations.ApiParam;
+&nbsp;import io.swagger.annotations.ApiResponse;
+&nbsp;import io.swagger.annotations.ApiResponses;
 &nbsp;import lombok.RequiredArgsConstructor;
-&nbsp;import me.imamhasan.stockmanager.model.Product;
-&nbsp;import me.imamhasan.stockmanager.service.ProductService;
+&nbsp;import me.imamhasan.stockmanager.model.Address;
+&nbsp;import me.imamhasan.stockmanager.service.AddressService;
+&nbsp;import me.imamhasan.stockmanager.service.AddressServiceImpl;
 &nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
 &nbsp;import org.springframework.web.bind.annotation.*;
 &nbsp;
-&nbsp;import javax.validation.Valid;
 &nbsp;import java.util.List;
 &nbsp;
 &nbsp;@RestController
-&nbsp;@RequestMapping(&quot;/api/products&quot;)
-&nbsp;@Api(value = &quot;Product Management System&quot;, description = &quot;Operations pertaining to product in Product Management System&quot;)
+&nbsp;@RequestMapping(&quot;/api/addresses&quot;)
+&nbsp;@Api(value = &quot;Address Management System&quot;, tags = { &quot;Addresses&quot; }, description = &quot;Operations pertaining to address in Address Management System&quot;)
 <b class="fc">&nbsp;@RequiredArgsConstructor</b>
-&nbsp;public class ProductController {
-&nbsp;    private final ProductService productService;
+&nbsp;public class AddressController {
+&nbsp;    private final AddressServiceImpl addressService;
 &nbsp;
-&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;getAllProducts&#39;)&quot;)
-&nbsp;    @ApiOperation(value = &quot;View a list of available products&quot;, response = List.class)
 &nbsp;    @GetMapping
-&nbsp;    public List&lt;Product&gt; getAllProducts() {
-<b class="nc">&nbsp;        return productService.getAllProducts();</b>
+&nbsp;    @ApiOperation(value = &quot;Get all addresses&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully retrieved addresses&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public List&lt;Address&gt; getAllAddresses() {
+<b class="nc">&nbsp;        return addressService.getAllAddresses();</b>
 &nbsp;    }
 &nbsp;
-&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;getProduct&#39;)&quot;)
-&nbsp;    @ApiOperation(value = &quot;Get a product by ID&quot;, response = Product.class)
-&nbsp;    @ApiParam(value = &quot;ID of the product to retrieve&quot;, required = true)
 &nbsp;    @GetMapping(&quot;/{id}&quot;)
-&nbsp;    public Product getProductById(@PathVariable Long id) {
-<b class="nc">&nbsp;        return productService.getProductById(id);</b>
+&nbsp;    @ApiOperation(value = &quot;Get address by id&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully retrieved address&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public Address getAddressById(@PathVariable Long id) {
+<b class="nc">&nbsp;        return addressService.getAddressById(id);</b>
 &nbsp;    }
 &nbsp;
-&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;storeProduct&#39;)&quot;)
-&nbsp;    @ApiOperation(value = &quot;Create a new product&quot;, response = Product.class)
-&nbsp;    @ApiParam(value = &quot;Details of the product to create&quot;, required = true)
 &nbsp;    @PostMapping
-&nbsp;    @ResponseStatus(HttpStatus.CREATED)
-&nbsp;    public Product addProduct(@Valid @RequestBody Product product) {
-<b class="nc">&nbsp;        return productService.addProduct(product);</b>
+&nbsp;    @ApiOperation(value = &quot;Add a new address&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 201, message = &quot;Successfully added address&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;?&gt; addAddress(@RequestBody Address address) {
+<b class="nc">&nbsp;        addressService.saveAddress(address);</b>
+<b class="nc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(&quot;Address added successfully&quot;);</b>
 &nbsp;    }
 &nbsp;
-&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;updateProduct&#39;)&quot;)
-&nbsp;    @ApiOperation(value = &quot;Update an existing product&quot;, response = Product.class)
-&nbsp;    @ApiParam(value = &quot;ID of the product to update&quot;, required = true)
 &nbsp;    @PutMapping(&quot;/{id}&quot;)
-&nbsp;    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
-<b class="nc">&nbsp;        product.setId(id);</b>
-<b class="nc">&nbsp;        return productService.updateProduct(product);</b>
+&nbsp;    @ApiOperation(value = &quot;Update an existing address&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully updated address&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;?&gt; updateAddress(@PathVariable Long id, @RequestBody Address address) {
+<b class="nc">&nbsp;        addressService.updateAddress(address);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(&quot;Address updated successfully&quot;);</b>
 &nbsp;    }
 &nbsp;
-&nbsp;//    @PreAuthorize(&quot;hasAuthority(&#39;deleteProduct&#39;)&quot;)
-&nbsp;    @ApiOperation(value = &quot;Delete a product by ID&quot;)
-&nbsp;    @ApiParam(value = &quot;ID of the product to delete&quot;, required = true)
 &nbsp;    @DeleteMapping(&quot;/{id}&quot;)
-&nbsp;    public void deleteProduct(@PathVariable Long id) {
-<b class="nc">&nbsp;        productService.deleteProduct(id);</b>
+&nbsp;    @ApiOperation(value = &quot;Delete an existing address&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully deleted address&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;?&gt; deleteAddress(@PathVariable Long id) {
+<b class="nc">&nbsp;        addressService.deleteAddress(id);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(&quot;Address deleted successfully&quot;);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -159,7 +183,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-20 17:34</div>
+    <div style="float:right;">generated on 2023-02-22 18:15</div>
 </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.service.AddressService;
+import me.imamhasan.stockmanager.service.AddressServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/addresses")
-@Api(value = "Address Management System", tags = { "Address" }, description = "Operations pertaining to address in Address Management System")
+@Api(value = "Address Management System", tags = { "Addresses" }, description = "Operations pertaining to address in Address Management System")
 @RequiredArgsConstructor
 public class AddressController {
-
-    private final AddressService addressService;
+    private final AddressServiceImpl addressService;
 
     @GetMapping
     @ApiOperation(value = "Get all addresses")
@@ -67,7 +67,7 @@ public class AddressController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody Address address) {
-        addressService.updateAddress(id, address);
+        addressService.updateAddress(address);
         return ResponseEntity.ok("Address updated successfully");
     }
 

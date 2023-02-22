@@ -10,5 +10,5 @@ public interface AddressService {
     List<Address> getAllAddresses();
     Address getAddressById(Long addressId);
     void deleteAddress(Long addressId);
-    Address updateAddress(Long id, Address address);
+    Address updateAddress(Address address);
 }

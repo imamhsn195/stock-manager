@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > Product</title>
+  <title>Coverage Report > Address</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">me.imamhasan.stockmanager.model</a>
 </div>
 
-<h1>Coverage Summary for Class: Product (me.imamhasan.stockmanager.model)</h1>
+<h1>Coverage Summary for Class: Address (me.imamhasan.stockmanager.model)</h1>
 
 <table class="coverageStats">
 
@@ -37,43 +37,43 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">Product</td>
+  <td class="name">Address</td>
 <td class="coverageStat">
   <span class="percent">
-    12.5%
+    88.9%
   </span>
   <span class="absValue">
-    (1/8)
+    (8/9)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    12.5%
+    88.9%
   </span>
   <span class="absValue">
-    (1/8)
+    (8/9)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">Product$HibernateProxy$In2v14To</td>
+    <td class="name">Address$HibernateProxy$rjub8Qx5</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    12.5%
+    88.9%
   </span>
   <span class="absValue">
-    (1/8)
+    (8/9)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    12.5%
+    88.9%
   </span>
   <span class="absValue">
-    (1/8)
+    (8/9)
   </span>
 </td>
 </tr>
@@ -85,40 +85,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package me.imamhasan.stockmanager.model;
+&nbsp;
 &nbsp;import lombok.AllArgsConstructor;
 &nbsp;import lombok.Data;
 &nbsp;import lombok.NoArgsConstructor;
-&nbsp;import javax.persistence.*;
-&nbsp;import javax.validation.constraints.*;
-&nbsp;import java.math.BigDecimal;
 &nbsp;
-<b class="nc">&nbsp;@Data</b>
-<b class="nc">&nbsp;@AllArgsConstructor</b>
+&nbsp;import javax.persistence.*;
+&nbsp;import javax.validation.constraints.NotBlank;
+&nbsp;
 <b class="fc">&nbsp;@NoArgsConstructor</b>
+<b class="nc">&nbsp;@AllArgsConstructor</b>
 &nbsp;@Entity
-&nbsp;@Table(name = &quot;product&quot;)
-&nbsp;public class Product {
+<b class="fc">&nbsp;@Data</b>
+&nbsp;public class Address {
 &nbsp;
 &nbsp;    @Id
 &nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
-<b class="nc">&nbsp;    private Long id;</b>
+<b class="fc">&nbsp;    private Long id;</b>
+&nbsp;    @NotBlank
+<b class="fc">&nbsp;    private String street;</b>
 &nbsp;
-&nbsp;    @NotBlank(message = &quot;Name is required&quot;)
-&nbsp;    @Size(min = 1, max = 255)
-<b class="nc">&nbsp;    private String name;</b>
+&nbsp;//    @NotBlank
+<b class="fc">&nbsp;    private String city;</b>
 &nbsp;
-&nbsp;    @NotBlank(message = &quot;Description is required&quot;)
-&nbsp;    @Size(min = 1, max = 1000)
-<b class="nc">&nbsp;    private String description;</b>
+&nbsp;    @NotBlank
+<b class="fc">&nbsp;    private String state;</b>
 &nbsp;
-&nbsp;    @NotNull(message = &quot;Price is required&quot;)
-&nbsp;    @DecimalMin(value = &quot;0.01&quot;, message = &quot;Price should not be less than 0.01&quot;)
-<b class="nc">&nbsp;    private BigDecimal price;</b>
+&nbsp;    @NotBlank
+<b class="fc">&nbsp;    private String country;</b>
 &nbsp;
-&nbsp;    @NotNull(message = &quot;Quantity is required&quot;)
-&nbsp;    @Min(value = 1, message = &quot;Quantity should be at least 1&quot;)
-<b class="nc">&nbsp;    private Integer quantity;</b>
-&nbsp;
+&nbsp;//    @NotBlank
+<b class="fc">&nbsp;    private String zipCode;</b>
 &nbsp;}
 </code>
 </pre>
@@ -143,7 +140,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-02-20 17:35</div>
+    <div style="float:right;">generated on 2023-02-22 18:15</div>
 </div>
 </body>
 </html>

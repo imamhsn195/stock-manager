@@ -1,0 +1,192 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > SupplierController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">me.imamhasan.stockmanager.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: SupplierController (me.imamhasan.stockmanager.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SupplierController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package me.imamhasan.stockmanager.controller;
+&nbsp;
+&nbsp;import io.swagger.annotations.Api;
+&nbsp;import io.swagger.annotations.ApiOperation;
+&nbsp;import io.swagger.annotations.ApiResponse;
+&nbsp;import io.swagger.annotations.ApiResponses;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import me.imamhasan.stockmanager.model.Supplier;
+&nbsp;import me.imamhasan.stockmanager.service.SupplierService;
+&nbsp;import me.imamhasan.stockmanager.service.SupplierServiceImpl;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/suppliers&quot;)
+&nbsp;@Api(value = &quot;Supplier Management System&quot;, tags = { &quot;Suppliers&quot; }, description = &quot;Operations pertaining to supplier in Supplier Management System&quot;)
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class SupplierController {
+&nbsp;
+&nbsp;    private final SupplierServiceImpl supplierService;
+&nbsp;
+&nbsp;    @GetMapping
+&nbsp;    @ApiOperation(value = &quot;Get all suppliers&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully retrieved suppliers&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public List&lt;Supplier&gt; getAllSuppliers() {
+<b class="nc">&nbsp;        return supplierService.getAllSuppliers();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    @ApiOperation(value = &quot;Get supplier by id&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully retrieved supplier&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public Supplier getSupplierById(@PathVariable Long id) {
+<b class="nc">&nbsp;        return supplierService.getSupplierById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping
+&nbsp;    @ApiOperation(value = &quot;Add a new supplier&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 201, message = &quot;Successfully added supplier&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;?&gt; addSupplier(@Valid @RequestBody Supplier supplier) {
+<b class="nc">&nbsp;        supplierService.saveSupplier(supplier);</b>
+<b class="nc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).body(&quot;Supplier added successfully&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    @ApiOperation(value = &quot;Update an existing supplier&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully updated supplier&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;?&gt; updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
+<b class="nc">&nbsp;        supplier.setId(id);</b>
+<b class="nc">&nbsp;        supplierService.updateSupplier(supplier);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(&quot;Supplier updated successfully&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @ApiOperation(value = &quot;Delete an existing supplier&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Successfully deleted supplier&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;You are not authorized to view the resource&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;Accessing the resource you were trying to reach is forbidden&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;The resource you were trying to reach is not found&quot;)
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;?&gt; deleteSupplier(@PathVariable Long id) {
+<b class="nc">&nbsp;        supplierService.deleteSupplier(id);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(&quot;Supplier deleted successfully&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-02-22 18:15</div>
+</div>
+</body>
+</html>

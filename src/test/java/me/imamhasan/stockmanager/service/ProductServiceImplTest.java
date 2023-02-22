@@ -30,7 +30,6 @@ public class ProductServiceImplTest {
         List<Product> products = new ArrayList<>();
         products.add(new Product(1L, "Product A", "Description A", new BigDecimal("10.00"), 100));
         products.add(new Product(2L, "Product B", "Description B", new BigDecimal("10.00"), 200));
-        System.out.println("Products :" + products);
         Mockito.when(productRepository.findAll()).thenReturn(products);
         Mockito.when(productRepository.findById(1L)).thenReturn(Optional.of(products.get(0)));
         Mockito.when(productRepository.save(Mockito.any(Product.class))).thenAnswer(invocation -> {
@@ -59,7 +58,7 @@ public class ProductServiceImplTest {
         Assert.assertEquals(new BigDecimal("10.00"), product.getPrice());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalStateException.class)
     public void testGetProductByIdNotFound() {
         productService.getProductById(999L);
     }
@@ -85,7 +84,7 @@ public class ProductServiceImplTest {
         Assert.assertEquals(new BigDecimal("11.00"), savedProduct.getPrice());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalStateException.class)
     public void testUpdateProductNotFound() {
         // Create a product with a known id and some other properties
         Long id = 1L;
@@ -94,20 +93,18 @@ public class ProductServiceImplTest {
         // Mock the behavior of the ProductRepository.findById method to return Optional.empty()
         Mockito.when(productRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Call the updateProduct method and expect it to throw a ProductNotFoundException
+        // Call the updateProduct method and expect it to throw a IllegalStateException
         productService.updateProduct(product);
     }
 
     @Test
     public void testDeleteProduct() {
         productService.deleteProduct(1L);
-
         Mockito.verify(productRepository, Mockito.times(1)).deleteById(1L);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalStateException.class)
     public void testDeleteProductNotFound() {
         productService.deleteProduct(999L);
     }
-
 }

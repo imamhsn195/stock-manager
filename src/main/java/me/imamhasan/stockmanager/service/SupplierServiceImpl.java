@@ -5,7 +5,6 @@ import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Supplier;
 import me.imamhasan.stockmanager.repository.AddressRepository;
 import me.imamhasan.stockmanager.repository.SupplierRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +45,9 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier updateSupplier(Long id, Supplier supplier) {
-        return null;
+    public Supplier updateSupplier(Supplier supplier) {
+        supplierRepository.findById(supplier.getId())
+                .orElseThrow(() -> new IllegalStateException("Supplier with id " + supplier.getId() + " not found"));
+        return supplierRepository.save(supplier);
     }
 }

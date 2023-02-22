@@ -24,18 +24,20 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address getAddressById(Long addressId) {
         return addressRepository.findById(addressId)
-                .orElseThrow(() -> new IllegalStateException("Address with id:  ${addressId} not found"));
+                .orElseThrow(() -> new IllegalStateException("Address with id " + addressId + " not found"));
     }
 
     @Override
     public void deleteAddress(Long addressId) {
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IllegalStateException("Address with id:  ${addressId} not found"));
+                .orElseThrow(() -> new IllegalStateException("Address with id " + addressId + " not found"));
         addressRepository.delete(address);
     }
 
     @Override
-    public Address updateAddress(Long id, Address address) {
-        return null;
+    public Address updateAddress(Address address) {
+        addressRepository.findById(address.getId())
+                .orElseThrow(() -> new IllegalStateException("Address with id " + address.getId() + " not found"));
+        return addressRepository.save(address);
     }
 }
