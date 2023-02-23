@@ -1,7 +1,9 @@
 package me.imamhasan.stockmanager.controller;
 
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import me.imamhasan.stockmanager.config.SwaggerPayloads;
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.service.ProductServiceImpl;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductServiceImpl productService;
-
-
     @GetMapping
     @ApiOperation(value = "Get all products")
     @ApiResponses(value = {
@@ -51,13 +51,12 @@ public class ProductController {
     }
 
     @PostMapping
-    @ApiParam(value = "Details of the product to create", required = true)
-    @ApiOperation(value = "Add a new product")
+    @ApiOperation(value = "Add a new product", notes = SwaggerPayloads.PRODUCT_POST_REQUEST_BODY)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully added product"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+        @ApiResponse(code = 201, message = "Successfully added product"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     @ResponseStatus(HttpStatus.CREATED)
     public Product addProduct(@Valid @RequestBody Product product) {
