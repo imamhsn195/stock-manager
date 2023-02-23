@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -47,19 +49,19 @@ public class AddressServiceTest {
         addresses.add(address2);
         addressRepository.saveAll(addresses);
 
-        List<Address> result = addressService.getAllAddresses();
+        Page<Address> result = addressService.getAllAddresses(Pageable.ofSize(2));
 
         assertNotNull(result);
-        assertEquals(2, result.size());
+        assertEquals(addresses.size(), result.getTotalElements());
 
-        Address result1 = result.get(0);
+        Address result1 = result.getContent().get(0);
         assertEquals("123 Main St", result1.getStreet());
         assertEquals("New York", result1.getCity());
         assertEquals("NY", result1.getState());
         assertEquals("USA", result1.getCountry());
         assertEquals("10001", result1.getZipCode());
 
-        Address result2 = result.get(1);
+        Address result2 = result.getContent().get(1);
         assertEquals("456 Maple Ave", result2.getStreet());
         assertEquals("San Francisco", result2.getCity());
         assertEquals("CA", result2.getState());
@@ -107,35 +109,6 @@ public class AddressServiceTest {
         assertEquals(address.getCountry(), retrievedAddress.getCountry());
         assertEquals(address.getZipCode(), retrievedAddress.getZipCode());
     }
-
-//    @Test
-//    public void testUpdateAddress() {
-//        Address address = new Address();
-//        address.setStreet("123 Main St");
-//        address.setCity("Anytown");
-//        address.setState("CA");
-//        address.setCountry("USA");
-//        address.setZipCode("12345");
-//
-//        Address savedAddress = addressService.saveAddress(address);
-//
-//        Address updatedAddress = new Address();
-//        updatedAddress.setId(savedAddress.getId());
-//        updatedAddress.setStreet("456 Oak Ave");
-//        updatedAddress.setCity("Othertown");
-//        updatedAddress.setState("NY");
-//        updatedAddress.setCountry("USA");
-//        updatedAddress.setZipCode("67890");
-//
-//        Address savedUpdatedAddress = addressService.saveAddress(updatedAddress);
-//
-//        assertEquals(savedAddress.getId(), savedUpdatedAddress.getId());
-//        assertEquals(updatedAddress.getStreet(), savedUpdatedAddress.getStreet());
-//        assertEquals(updatedAddress.getCity(), savedUpdatedAddress.getCity());
-//        assertEquals(updatedAddress.getState(), savedUpdatedAddress.getState());
-//        assertEquals(updatedAddress.getCountry(), savedUpdatedAddress.getCountry());
-//        assertEquals(updatedAddress.getZipCode(), savedUpdatedAddress.getZipCode());
-//    }
 
     @Test
     public void testDeleteAddress() throws IllegalStateException{

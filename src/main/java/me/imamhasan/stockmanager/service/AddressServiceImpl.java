@@ -3,6 +3,8 @@ package me.imamhasan.stockmanager.service;
 import lombok.AllArgsConstructor;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.repository.AddressRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> getAllAddresses() {
-        return addressRepository.findAll();
+    public Page<Address> getAllAddresses(Pageable pageable) {
+        return addressRepository.findAll(pageable);
     }
 
     @Override

@@ -1,13 +1,13 @@
 package me.imamhasan.stockmanager.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import me.imamhasan.stockmanager.model.Supplier;
 import me.imamhasan.stockmanager.service.SupplierService;
 import me.imamhasan.stockmanager.service.SupplierServiceImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,11 @@ public class SupplierController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public List<Supplier> getAllSuppliers() {
+    public List<Supplier> getAllSuppliers(
+            @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
+            @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
+            @ApiParam(value = "Sort field", example = "name") @RequestParam(defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return supplierService.getAllSuppliers();
     }
 

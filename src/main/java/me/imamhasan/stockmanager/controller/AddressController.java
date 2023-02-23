@@ -1,13 +1,14 @@
 package me.imamhasan.stockmanager.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.service.AddressService;
 import me.imamhasan.stockmanager.service.AddressServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,14 @@ public class AddressController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public List<Address> getAllAddresses() {
-        return addressService.getAllAddresses();
-    }
 
+public Page<Address> getAllAddresses(
+        @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
+        @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
+        @ApiParam(value = "Sort field", example = "city") @RequestParam(defaultValue = "id") String sortBy) {
+    Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+    return addressService.getAllAddresses(pageable);
+}
     @GetMapping("/{id}")
     @ApiOperation(value = "Get address by id")
     @ApiResponses(value = {
@@ -53,9 +58,9 @@ public class AddressController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> addAddress(@RequestBody Address address) {
-        addressService.saveAddress(address);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Address added successfully");
+    @ResponseStatus(HttpStatus.CREATED)
+    public Address addAddress(@RequestBody Address address) {
+        return addressService.saveAddress(address);
     }
 
     @PutMapping("/{id}")

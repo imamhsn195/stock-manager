@@ -1,9 +1,12 @@
 package me.imamhasan.stockmanager.controller;
+
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import me.imamhasan.stockmanager.model.Product;
-import me.imamhasan.stockmanager.service.ProductService;
 import me.imamhasan.stockmanager.service.ProductServiceImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +29,11 @@ public class ProductController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(
+            @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
+            @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
+            @ApiParam(value = "Sort field", example = "order") @RequestParam(defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return productService.getAllProducts();
     }
 
