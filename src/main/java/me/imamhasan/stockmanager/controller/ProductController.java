@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.*;
+
 @RestController
 @RequestMapping("/api/products")
 @Api(value = "Product Management System", tags = { "Products"}, description = "Operations pertaining to product in Product Management System")
@@ -51,7 +53,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new product", notes = SwaggerPayloads.PRODUCT_POST_REQUEST_BODY)
+    @ApiOperation(value = "Add a new product", notes = PRODUCT_POST_REQUEST_BODY)
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Successfully added product"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

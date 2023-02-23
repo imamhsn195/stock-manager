@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.SUPPLIER_POST_REQUEST_BODY;
+
 @RestController
 @RequestMapping("/api/suppliers")
 @Api(value = "Supplier Management System", tags = { "Suppliers" }, description = "Operations pertaining to supplier in Supplier Management System")
@@ -52,7 +54,7 @@ public class SupplierController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new supplier")
+    @ApiOperation(value = "Add a new supplier", notes = SUPPLIER_POST_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully added supplier"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

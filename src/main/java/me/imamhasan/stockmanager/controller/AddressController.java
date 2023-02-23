@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.ADDRESS_POST_REQUEST_BODY;
+
 @RestController
 @RequestMapping("/api/addresses")
 @Api(value = "Address Management System", tags = { "Addresses" }, description = "Operations pertaining to address in Address Management System")
@@ -31,7 +33,7 @@ public class AddressController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
 
-public Page<Address> getAllAddresses(
+    public Page<Address> getAllAddresses(
         @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
         @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
         @ApiParam(value = "Sort field", example = "city") @RequestParam(defaultValue = "id") String sortBy) {
@@ -51,7 +53,7 @@ public Page<Address> getAllAddresses(
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new address")
+    @ApiOperation(value = "Add a new address", notes = ADDRESS_POST_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully added address"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
