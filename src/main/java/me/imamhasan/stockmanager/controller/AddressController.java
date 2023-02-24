@@ -60,7 +60,6 @@ public class AddressController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     public Address addAddress(@RequestBody Address address) {
         return addressService.saveAddress(address);
     }
@@ -73,9 +72,9 @@ public class AddressController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody Address address) {
-        addressService.updateAddress(address);
-        return ResponseEntity.ok("Address updated successfully");
+    public Address updateAddress(@PathVariable Long id, @RequestBody Address address) {
+        address.setId(id);
+        return addressService.updateAddress(address);
     }
 
     @DeleteMapping("/{id}")

@@ -5,6 +5,8 @@ import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Supplier;
 import me.imamhasan.stockmanager.repository.AddressRepository;
 import me.imamhasan.stockmanager.repository.SupplierRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
+    public Page<Supplier> getAllSuppliers(Pageable pageable) {
+        return supplierRepository.findAll(pageable);
     }
 
     @Override

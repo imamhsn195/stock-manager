@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -93,11 +95,12 @@ public class SupplierServiceImplTest {
         supplier.setPhone("(123)456-7890");
         assertNotNull(address.getId());
         supplier.setAddress(address);
-        Supplier savedSupplier = supplierService.saveSupplier(supplier);
+        supplierService.saveSupplier(supplier);
 
-        List<Supplier> suppliers = supplierService.getAllSuppliers();
+        Page<Supplier> suppliers = supplierService.getAllSuppliers(Pageable.ofSize(1));
         assertNotNull(suppliers);
-        assertTrue(suppliers.size() > 0);
+
+        assertEquals(1, suppliers.getTotalElements());
     }
 
     @Test
