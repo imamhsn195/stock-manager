@@ -1,6 +1,5 @@
 package me.imamhasan.stockmanager.service;
 
-import lombok.AllArgsConstructor;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Supplier;
 import me.imamhasan.stockmanager.repository.SupplierRepository;
@@ -21,12 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
 import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
