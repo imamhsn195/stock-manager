@@ -36,7 +36,7 @@ public class SupplierController {
     public List<Supplier> getAllSuppliers(
             @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
             @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
-            @ApiParam(value = "Sort field", example = "name") @RequestParam(defaultValue = "id") String sortBy) {
+            @ApiParam(value = "Sort field", example = "name") @RequestParam(defaultValue = "name") String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return supplierService.getAllSuppliers();
     }

@@ -3,17 +3,17 @@ package me.imamhasan.stockmanager.service;
 import lombok.AllArgsConstructor;
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @Override

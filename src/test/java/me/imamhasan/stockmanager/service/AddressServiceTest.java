@@ -3,29 +3,49 @@ package me.imamhasan.stockmanager.service;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.repository.AddressRepository;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
+import javax.transaction.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+@RunWith(SpringRunner.class)
+@Transactional
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AddressServiceTest {
-
+    @Autowired
+    ApplicationContext applicationContext;
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
     private AddressServiceImpl addressService;
-
+    @BeforeAll
+    public void clearProductTable() {}
+    @BeforeEach
+    private void beforeEachTest() {}
     @Test
     public void testFindAllAddresses() {
         Address address1 = new Address();
@@ -47,26 +67,28 @@ public class AddressServiceTest {
         List<Address> addresses = new ArrayList<>();
         addresses.add(address1);
         addresses.add(address2);
+
         addressRepository.saveAll(addresses);
 
-        Page<Address> result = addressService.getAllAddresses(Pageable.ofSize(2));
+        Page<Address> savedAddresses = addressService.getAllAddresses(Pageable.ofSize(2));
 
-        assertNotNull(result);
-        assertEquals(addresses.size(), result.getTotalElements());
+        assertNotNull(savedAddresses);
 
-        Address result1 = result.getContent().get(0);
-        assertEquals("123 Main St", result1.getStreet());
-        assertEquals("New York", result1.getCity());
-        assertEquals("NY", result1.getState());
-        assertEquals("USA", result1.getCountry());
-        assertEquals("10001", result1.getZipCode());
+        assertEquals(addresses.size(), savedAddresses.getTotalElements());
 
-        Address result2 = result.getContent().get(1);
-        assertEquals("456 Maple Ave", result2.getStreet());
-        assertEquals("San Francisco", result2.getCity());
-        assertEquals("CA", result2.getState());
-        assertEquals("USA", result2.getCountry());
-        assertEquals("94102", result2.getZipCode());
+        Address savedAddress1 = savedAddresses.getContent().get(0);
+        assertEquals("123 Main St", savedAddress1.getStreet());
+        assertEquals("New York", savedAddress1.getCity());
+        assertEquals("NY", savedAddress1.getState());
+        assertEquals("USA", savedAddress1.getCountry());
+        assertEquals("10001", savedAddress1.getZipCode());
+
+        Address savedAddress2 = savedAddresses.getContent().get(1);
+        assertEquals("456 Maple Ave", savedAddress2.getStreet());
+        assertEquals("San Francisco", savedAddress2.getCity());
+        assertEquals("CA", savedAddress2.getState());
+        assertEquals("USA", savedAddress2.getCountry());
+        assertEquals("94102", savedAddress2.getZipCode());
     }
 
     @Test
@@ -162,4 +184,12 @@ public class AddressServiceTest {
         assertEquals("USA", updatedAddress.getCountry());
         assertEquals("67890", updatedAddress.getZipCode());
     }
+    @AfterEach
+    public void clearDatabase() {
+        addressRepository.deleteAll();
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE address ALTER COLUMN id RESTART WITH 1");
+    }
+
+    @AfterAll
+    private void setUpAfterAll(){}
 }

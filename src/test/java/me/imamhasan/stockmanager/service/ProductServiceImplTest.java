@@ -1,61 +1,117 @@
 package me.imamhasan.stockmanager.service;
 
+import lombok.AllArgsConstructor;
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.repository.ProductRepository;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+@SpringBootTest
+@ActiveProfiles("test")
+@RunWith(SpringRunner.class)
+@Transactional
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ProductServiceImplTest {
 
-    @Mock
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @Autowired
     private ProductRepository productRepository;
 
-    @InjectMocks
+    @Autowired
     private ProductServiceImpl productService;
 
-    @Before
-    public void setUp() {
-        List<Product> products = new ArrayList<>();
-        products.add(new Product(1L, "Product A", "Description A", new BigDecimal("10.00"), 100));
-        products.add(new Product(2L, "Product B", "Description B", new BigDecimal("10.00"), 200));
-        Mockito.when(productRepository.findAll()).thenReturn(products);
-        Mockito.when(productRepository.findById(1L)).thenReturn(Optional.of(products.get(0)));
-        Mockito.when(productRepository.save(Mockito.any(Product.class))).thenAnswer(invocation -> {
-            Product product = invocation.getArgument(0);
-            if (product.getId() == null) {
-                product.setId(3L);
-            }
-            return product;
-        });
-    }
-
+    @BeforeAll
+    public void clearProductTable() {}
+    @BeforeEach
+    private void beforeEachTest() {}
     @Test
     public void testGetAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        Assert.assertEquals(2, products.size());
-        Assert.assertEquals("Product A", products.get(0).getName());
-        Assert.assertEquals("Description B", products.get(1).getDescription());
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPrice(BigDecimal.valueOf(5200));
+        product.setQuantity(5);
+
+        Product product1 = new Product();
+        product1.setName("Apple AirPods Pro");
+        product1.setDescription("The Apple AirPods Pro are wireless earbuds");
+        product1.setPrice(BigDecimal.valueOf(4500));
+        product1.setQuantity(10);
+
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+        products.add(product1);
+
+        productRepository.saveAll(products);
+
+        Page<Product> savedProducts = productService.getAllProducts(Pageable.ofSize(2));
+
+        assertNotNull(savedProducts);
+
+        Product savedProduct = savedProducts.getContent().get(0);
+
+        Assert.assertEquals(product.getId(), savedProduct.getId());
+        Assert.assertEquals(product.getName(), savedProduct.getName());
+        Assert.assertEquals(product.getDescription(), savedProduct.getDescription());
+        Assert.assertEquals(new BigDecimal("5200"), new BigDecimal(savedProduct.getPrice().toString()));
+        Assert.assertEquals(product.getQuantity(), savedProduct.getQuantity());
+
+        Product savedProduct1 = savedProducts.getContent().get(1);
+
+        Assert.assertEquals(product1.getId(), savedProduct1.getId());
+        Assert.assertEquals(product1.getName(), savedProduct1.getName());
+        Assert.assertEquals(product1.getDescription(), savedProduct1.getDescription());
+        Assert.assertEquals(new BigDecimal("4500"), savedProduct1.getPrice());
+        Assert.assertEquals(product1.getQuantity(), savedProduct1.getQuantity());
+
+        Assert.assertEquals(products.size(), savedProducts.getSize());
     }
 
     @Test
     public void testGetProductById() {
-        Product product = productService.getProductById(1L);
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPrice(BigDecimal.valueOf(5200));
+        product.setQuantity(5);
+        productRepository.save(product);
+        assertNotNull(product.getId());
 
-        Assert.assertNotNull(product);
-        Assert.assertEquals("Product A", product.getName());
-        Assert.assertEquals(new BigDecimal("10.00"), product.getPrice());
+        Product savedProduct = productService.getProductById(product.getId());
+
+        Assert.assertNotNull(savedProduct);
+        Assert.assertEquals(product.getName(), savedProduct.getName());
+        Assert.assertEquals(new BigDecimal("5200"), new BigDecimal(product.getPrice().toString()));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -65,46 +121,87 @@ public class ProductServiceImplTest {
 
     @Test
     public void testAddProduct() {
-        Product newProduct = new Product (3L, "Product C", "Description A", new BigDecimal("30.00"), 100);
-        Product savedProduct = productService.addProduct(newProduct);
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPrice(BigDecimal.valueOf(5200));
+        product.setQuantity(5);
+        Product savedProduct = productRepository.save(product);
 
-        Assert.assertNotNull(savedProduct);
-        Assert.assertEquals("Product C", savedProduct.getName());
-        Assert.assertEquals(new BigDecimal("30.00"), savedProduct.getPrice());
-        Assert.assertEquals(3L, savedProduct.getId().longValue());
+        Assert.assertNotNull(savedProduct.getId());
+
+        Assert.assertEquals(product.getName(), savedProduct.getName());
+        Assert.assertEquals(new BigDecimal(String.valueOf(product.getPrice())), new BigDecimal(savedProduct.getPrice().toString()));
+        Assert.assertEquals(product.getId().toString(), savedProduct.getId().toString());
     }
 
     @Test
     public void testUpdateProduct() {
-        Product updatedProduct = new Product(1L, "Product A Updated", "Description A", new BigDecimal("11.00"), 100);
-        Product savedProduct = productService.updateProduct(updatedProduct);
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPrice(BigDecimal.valueOf(5200));
+        product.setQuantity(5);
+        Product savedProduct = productRepository.save(product);
 
-        Assert.assertNotNull(savedProduct);
-        Assert.assertEquals("Product A Updated", savedProduct.getName());
-        Assert.assertEquals(new BigDecimal("11.00"), savedProduct.getPrice());
+        assertNotNull(savedProduct);
+        assertEquals("Dell XPS 13", savedProduct.getName());
+        assertEquals("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability", savedProduct.getDescription());
+        assertEquals(new BigDecimal(5200), savedProduct.getPrice());
+        assertEquals(Integer.valueOf("5"), savedProduct.getQuantity());
+        assertEquals(product.getId(), savedProduct.getId());
+
+        savedProduct.setName("Apple AirPods Pro");
+        savedProduct.setDescription("The Apple AirPods Pro are wireless earbuds");
+        savedProduct.setPrice(BigDecimal.valueOf(4500));
+        savedProduct.setQuantity(10);
+
+        Product updatedProduct = productService.updateProduct(savedProduct);
+
+        Assert.assertNotNull(updatedProduct);
+        assertEquals("Apple AirPods Pro", savedProduct.getName());
+        assertEquals("The Apple AirPods Pro are wireless earbuds", savedProduct.getDescription());
+        assertEquals(new BigDecimal(4500), savedProduct.getPrice());
+        assertEquals(Integer.valueOf("10"), savedProduct.getQuantity());
     }
 
     @Test(expected = IllegalStateException.class)
     public void testUpdateProductNotFound() {
-        // Create a product with a known id and some other properties
-        Long id = 1L;
-        Product product = new Product(id, "Product A", "Description A", new BigDecimal("10.00"), 100);
 
-        // Mock the behavior of the ProductRepository.findById method to return Optional.empty()
-        Mockito.when(productRepository.findById(id)).thenReturn(Optional.empty());
-
-        // Call the updateProduct method and expect it to throw a IllegalStateException
+        Long id = 100L;
+        Product product = new Product();
+        product.setId(id);
         productService.updateProduct(product);
+
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testDeleteProduct() {
-        productService.deleteProduct(1L);
-        Mockito.verify(productRepository, Mockito.times(1)).deleteById(1L);
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPrice(BigDecimal.valueOf(5200));
+        product.setQuantity(5);
+        Product savedProduct = productRepository.save(product);
+
+        assertNotNull(savedProduct.getId());
+
+        productService.deleteProduct(savedProduct.getId());
+
+        productService.getProductById(savedProduct.getId());
     }
 
     @Test(expected = IllegalStateException.class)
     public void testDeleteProductNotFound() {
         productService.deleteProduct(999L);
     }
+
+    @AfterEach
+    public void clearDatabase() {
+        productRepository.deleteAll();
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE product ALTER COLUMN id RESTART WITH 1");
+    }
+
+    @AfterAll
+    private void setUpAfterAll(){}
 }
