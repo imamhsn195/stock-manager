@@ -1,8 +1,11 @@
-CREATE TABLE product_category (
+CREATE TABLE customers(
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  address_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (address_id) REFERENCES addresses(id)
 );

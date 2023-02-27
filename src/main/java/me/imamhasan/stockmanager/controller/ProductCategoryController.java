@@ -23,7 +23,7 @@ public class ProductCategoryController {
     @GetMapping
     @ApiOperation(value = "Get all productCategories")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved productCategories"),
+            @ApiResponse(code = 200, message = "Successfully retrieved product categories"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
@@ -39,7 +39,7 @@ public class ProductCategoryController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get productCategory by id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved productCategory"),
+            @ApiResponse(code = 200, message = "Successfully retrieved product category"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
@@ -51,7 +51,7 @@ public class ProductCategoryController {
     @PostMapping
     @ApiOperation(value = "Add a new productCategory", notes = PRODUCT_CATEGORY_POST_REQUEST_BODY)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully added productCategory"),
+            @ApiResponse(code = 201, message = "Successfully added product category"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
@@ -63,7 +63,7 @@ public class ProductCategoryController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update an existing productCategory")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated productCategory"),
+            @ApiResponse(code = 200, message = "Successfully updated product category"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
@@ -76,7 +76,7 @@ public class ProductCategoryController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete an existing productCategory")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deleted productCategory"),
+            @ApiResponse(code = 200, message = "Successfully deleted product category"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")

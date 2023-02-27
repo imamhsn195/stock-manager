@@ -1,1 +1,0 @@
-ALTER TABLE supplier ADD COLUMN address_id VARCHAR(255) NOT NULL;

@@ -1,0 +1,10 @@
+CREATE TABLE purchases(
+  id INT NOT NULL AUTO_INCREMENT,
+  supplier_id INT NOT NULL,
+  purchase_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
