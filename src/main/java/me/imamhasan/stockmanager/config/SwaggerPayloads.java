@@ -34,4 +34,10 @@ public class SwaggerPayloads {
                 "zipCode" : "12345"
             }
         """;
+
+    public static final String PRODUCT_CATEGORY_POST_REQUEST_BODY = """
+            {
+              "name": "Product Category"
+            }    
+        """;
 }

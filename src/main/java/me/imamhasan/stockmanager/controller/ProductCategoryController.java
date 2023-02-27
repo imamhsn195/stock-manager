@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static me.imamhasan.stockmanager.config.SwaggerPayloads.ADDRESS_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.PRODUCT_CATEGORY_POST_REQUEST_BODY;
 
 @RestController
 @RequestMapping("/api/productCategories")
@@ -32,7 +32,7 @@ public class ProductCategoryController {
     public Page<ProductCategory> getAllProductCategories(
         @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
         @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
-        @ApiParam(value = "Sort field", example = "city") @RequestParam(defaultValue = "id") String sortBy) {
+        @ApiParam(value = "Sort field", example = "name") @RequestParam(defaultValue = "id") String sortBy) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
     return productCategoryService.getAllProductCategories(pageable);
 }
@@ -49,7 +49,7 @@ public class ProductCategoryController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new productCategory", notes = ADDRESS_POST_REQUEST_BODY)
+    @ApiOperation(value = "Add a new productCategory", notes = PRODUCT_CATEGORY_POST_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully added productCategory"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
