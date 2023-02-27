@@ -1,29 +1,28 @@
 package me.imamhasan.stockmanager.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Data
-@Table(name = "product_categories")
-public class ProductCategory {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String name;
+    @Column(name = "customer_id", nullable = false)
+    private Long customerId;
+
+    @Column(name = "order_date", nullable = false)
+    private LocalDate orderDate;
+
 
     @CreationTimestamp
     @Column(name = "created_at",updatable = false)
@@ -35,4 +34,5 @@ public class ProductCategory {
 
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
+
 }

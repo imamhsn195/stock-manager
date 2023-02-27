@@ -4,12 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Setter
@@ -36,4 +40,15 @@ public class Customer {
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     @NotNull(message = "Customer's address is required.")
     private Address address;
+
+    @CreationTimestamp
+    @Column(name = "created_at",updatable = false)
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
+
+    @Column(name = "deleted_at")
+    private Timestamp deletedAt;
 }
