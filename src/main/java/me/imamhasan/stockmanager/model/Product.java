@@ -33,4 +33,9 @@ public class Product {
     @Min(value = 1, message = "Quantity should be at least 1")
     private Integer quantity;
 
+    @OneToOne
+    @JoinColumn(name = "product_category_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "Product category is required.")
+    private ProductCategory productCategory;
+
 }

@@ -60,9 +60,8 @@ public class SupplierController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> addSupplier(@Valid @RequestBody Supplier supplier) {
-        supplierService.saveSupplier(supplier);
-        return ResponseEntity.ok("Supplier added successfully");
+    public Supplier addSupplier(@Valid @RequestBody Supplier supplier) {
+        return supplierService.saveSupplier(supplier);
     }
 
     @PutMapping("/{id}")

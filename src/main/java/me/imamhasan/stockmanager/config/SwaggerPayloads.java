@@ -3,10 +3,14 @@ package me.imamhasan.stockmanager.config;
 public class SwaggerPayloads {
     public static final String PRODUCT_POST_REQUEST_BODY = """
             {
-              "name": "Product One",
-              "description": "Product One description",
-              "price": 10,
-              "quantity": 100
+                "name": "Product One",
+                "description": "Product One description",
+                "productCategory" : {
+                    "id" : 1,
+                    "name": "Product Category"
+                },  
+                "price": 10,
+                "quantity": 100
             }
         """;
 
@@ -15,9 +19,10 @@ public class SwaggerPayloads {
             {
                 "name" : "John Doe",
                 "email" : "johndoe@example.com",
-                "phone" : "(123)456-7890", 
+                "phone" : "(123)456-7890",
                 "address" : { 
-                    "street" : "123 Main St",
+                     "id" : 1,
+                     "street" : "123 Main St",
                      "city" : "Anytown", 
                      "state" : "CA", 
                      "country" : "USA", 
