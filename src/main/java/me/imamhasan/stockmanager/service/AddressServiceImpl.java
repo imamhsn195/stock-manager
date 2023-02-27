@@ -5,8 +5,13 @@ import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.repository.AddressRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
 @AllArgsConstructor
+@Transactional
 @Service
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
@@ -28,10 +33,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void deleteAddress(Long addressId) {
+    public ResponseEntity<?> deleteAddress(Long addressId) {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new IllegalStateException("Address with id " + addressId + " not found"));
         addressRepository.delete(address);
+        return ResponseEntity.ok().body("Address deleted successfully.");
     }
 
     @Override

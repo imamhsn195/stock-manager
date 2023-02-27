@@ -57,4 +57,17 @@ public class SwaggerPayloads {
               "name": "Product Category"
             }    
         """;
+    public static final String ORDER_POST_REQUEST_BODY = """
+            {
+                "orderDate" : "2023-01-12",
+                "customer" : {
+                    "name" : "John Doe",
+                    "email" : "johndoe@example.com",
+                    "phone" : "(123)456-7890",
+                    "address" : {
+                        "id" : 1
+                    }
+                }
+            }
+        """;
 }

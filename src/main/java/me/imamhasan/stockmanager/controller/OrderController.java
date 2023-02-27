@@ -2,8 +2,8 @@ package me.imamhasan.stockmanager.controller;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import me.imamhasan.stockmanager.model.ProductCategory;
-import me.imamhasan.stockmanager.service.ProductCategoryServiceImpl;
+import me.imamhasan.stockmanager.model.Order;
+import me.imamhasan.stockmanager.service.OrderServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,78 +11,78 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static me.imamhasan.stockmanager.config.SwaggerPayloads.PRODUCT_CATEGORY_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.ORDER_POST_REQUEST_BODY;
 
 @RestController
-@RequestMapping("/api/product_categories")
-@Api(value = "ProductCategory Management System", tags = { "Product Categories" }, description = "Operations pertaining to productCategory in ProductCategory Management System")
+@RequestMapping("/api/orders")
+@Api(value = "Order Management System", tags = { "Orders" }, description = "Operations pertaining to order in Order Management System")
 @RequiredArgsConstructor
-public class ProductCategoryController {
-    private final ProductCategoryServiceImpl productCategoryService;
+public class OrderController {
+    private final OrderServiceImpl orderService;
 
     @GetMapping
-    @ApiOperation(value = "Get all productCategories")
+    @ApiOperation(value = "Get all orders")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved product categories"),
+            @ApiResponse(code = 200, message = "Successfully retrieved orders"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
 
-    public Page<ProductCategory> getAllProductCategories(
+    public Page<Order> getAllOrders(
         @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
         @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
-        @ApiParam(value = "Sort field", example = "name") @RequestParam(defaultValue = "id") String sortBy) {
+        @ApiParam(value = "Sort field", example = "id") @RequestParam(defaultValue = "id") String sortBy) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-    return productCategoryService.getAllProductCategories(pageable);
+    return orderService.getAllOrders(pageable);
 }
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get productCategory by id")
+    @ApiOperation(value = "Get order by id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved product category"),
+            @ApiResponse(code = 200, message = "Successfully retrieved order"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ProductCategory getProductCategoryById(@PathVariable Long id) {
-        return productCategoryService.getProductCategoryById(id);
+    public Order getOrderById(@PathVariable Long id) {
+        return orderService.getOrderById(id);
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new productCategory", notes = PRODUCT_CATEGORY_POST_REQUEST_BODY)
+    @ApiOperation(value = "Add a new order", notes = ORDER_POST_REQUEST_BODY)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully added product category"),
+            @ApiResponse(code = 201, message = "Successfully added order"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ProductCategory addProductCategory(@RequestBody ProductCategory productCategory) {
-        return productCategoryService.saveProductCategory(productCategory);
+    public Order addOrder(@RequestBody Order order) {
+        return orderService.saveOrder(order);
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing productCategory")
+    @ApiOperation(value = "Update an existing order")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated product category"),
+            @ApiResponse(code = 200, message = "Successfully updated order"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ProductCategory updateProductCategory(@PathVariable Long id, @RequestBody ProductCategory productCategory) {
-        productCategory.setId(id);
-        return productCategoryService.updateProductCategory(productCategory);
+    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
+        order.setId(id);
+        return orderService.updateOrder(order);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete an existing productCategory")
+    @ApiOperation(value = "Delete an existing order")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deleted product category"),
+            @ApiResponse(code = 200, message = "Successfully deleted order"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public ResponseEntity<?> deleteProductCategory(@PathVariable Long id) {
-        productCategoryService.deleteProductCategory(id);
-        return ResponseEntity.ok("ProductCategory deleted successfully");
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.ok("Order deleted successfully");
     }
 }

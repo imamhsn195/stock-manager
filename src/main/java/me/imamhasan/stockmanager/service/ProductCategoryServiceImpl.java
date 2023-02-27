@@ -5,9 +5,13 @@ import me.imamhasan.stockmanager.model.ProductCategory;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @AllArgsConstructor
+@Transactional
 @Service
 public class ProductCategoryServiceImpl implements ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
@@ -29,10 +33,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public void deleteProductCategory(Long productCategoryId) {
+    public ResponseEntity<?> deleteProductCategory(Long productCategoryId) {
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new IllegalStateException("ProductCategory with id " + productCategoryId + " not found"));
         productCategoryRepository.delete(productCategory);
+        return ResponseEntity.ok().body("Product Deleted successfully.");
     }
 
     @Override

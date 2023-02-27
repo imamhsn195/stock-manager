@@ -7,10 +7,12 @@ import me.imamhasan.stockmanager.repository.AddressRepository;
 import me.imamhasan.stockmanager.repository.SupplierRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.transaction.Transactional;
 @AllArgsConstructor
+@Transactional
 @Service
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
@@ -40,10 +42,11 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public void deleteSupplier(Long supplierId) {
+    public ResponseEntity<?> deleteSupplier(Long supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new IllegalStateException("Supplier with id:  ${supplierId} not found"));
         supplierRepository.delete(supplier);
+        return ResponseEntity.ok().body("Supplier deleted successfully.");
     }
 
     @Override

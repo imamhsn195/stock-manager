@@ -7,9 +7,13 @@ import me.imamhasan.stockmanager.repository.AddressRepository;
 import me.imamhasan.stockmanager.repository.CustomerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @AllArgsConstructor
+@Transactional
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
@@ -39,10 +43,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(Long customerId) {
+    public ResponseEntity<?> deleteCustomer(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalStateException("Customer with id:  ${customerId} not found"));
         customerRepository.delete(customer);
+        return ResponseEntity.ok().body("Customer deleted successfully.");
     }
 
     @Override
