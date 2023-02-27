@@ -16,8 +16,8 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "suppliers")
-public class Supplier {
+@Table(name = "customers")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,6 +34,6 @@ public class Supplier {
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
-    @NotNull(message = "Supplier's address is required.")
+    @NotNull(message = "Customer's address is required.")
     private Address address;
 }

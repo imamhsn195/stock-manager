@@ -1,0 +1,1 @@
+ALTER TABLE customers ADD phone VARCHAR(255) NOT NULL;
