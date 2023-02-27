@@ -68,7 +68,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ApiParam(value = "ID of the product to update", required = true)
-    @ApiOperation(value = "Update an existing product", response = Product.class)
+    @ApiOperation(value = "Update an existing product", notes = PRODUCT_PUT_REQUEST_BODY , response = Product.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated product"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

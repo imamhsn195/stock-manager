@@ -40,7 +40,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
+
+        System.out.println("Product: " + product);
+
         productRepository.findById(product.getId()).orElseThrow(() -> new IllegalStateException("Product with id " + product.getId() + ""));
+
+        if(product.getProductCategory().getId() != null){
+            Long productCategoryId = product.getProductCategory().getId();
+            productCategoryRepository.findById(productCategoryId).orElseThrow(() -> new IllegalStateException("Product category not found with id " + productCategoryId));
+        }else{
+            ProductCategory productCategory = productCategoryRepository.save(product.getProductCategory());
+            product.setProductCategory(productCategory);
+        }
+
         return productRepository.save(product);
     }
 

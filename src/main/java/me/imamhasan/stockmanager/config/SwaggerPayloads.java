@@ -13,6 +13,18 @@ public class SwaggerPayloads {
                 "quantity": 100
             }
         """;
+    public static final String PRODUCT_PUT_REQUEST_BODY = """
+            {
+                "name": "Product One",
+                "description": "Product One description",
+                "productCategory" : {
+                    "id" : 1,
+                    "name": "Product Category"
+                },  
+                "price": 10,
+                "quantity": 100
+            }
+        """;
 
     public static final String SUPPLIER_POST_REQUEST_BODY = """
             
