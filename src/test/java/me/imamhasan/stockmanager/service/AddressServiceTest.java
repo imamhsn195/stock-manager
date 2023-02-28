@@ -1,8 +1,7 @@
-package me.imamhasan.stockmanager.service.test.java.me.imamhasan.stockmanager.service;
+package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.repository.AddressRepository;
-import me.imamhasan.stockmanager.service.AddressServiceImpl;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -40,9 +39,9 @@ public class AddressServiceTest {
     @Autowired
     private AddressServiceImpl addressService;
     @BeforeAll
-    public void clearProductTable() {}
+    public static void clearProductTable() {}
     @BeforeEach
-    private void beforeEachTest() {}
+    public void beforeEachTest() {}
     @Test
     public void testFindAllAddresses() {
         Address address1 = new Address();

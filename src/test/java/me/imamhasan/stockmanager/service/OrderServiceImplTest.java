@@ -1,28 +1,23 @@
-package me.imamhasan.stockmanager.service.test.java.me.imamhasan.stockmanager.service;
+package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Customer;
 import me.imamhasan.stockmanager.model.Order;
-import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.repository.OrderRepository;
-import me.imamhasan.stockmanager.service.AddressServiceImpl;
-import me.imamhasan.stockmanager.service.CustomerService;
-import me.imamhasan.stockmanager.service.OrderServiceImpl;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +31,8 @@ import static org.junit.Assert.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class OrderServiceImplTest {
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Autowired
     CustomerService customerService;
@@ -47,6 +44,11 @@ class OrderServiceImplTest {
 
     @Autowired
     AddressServiceImpl addressService;
+
+    @BeforeAll
+    public static void clearProductTable() {}
+    @BeforeEach
+    public void beforeEachTest() {}
 
     @Test()
     void saveOrder() {
@@ -242,4 +244,11 @@ class OrderServiceImplTest {
 
 
     }
+    @AfterEach
+    public void clearDatabase() {
+        orderRepository.deleteAll();
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE orders ALTER COLUMN id RESTART WITH 1");
+    }
+    @AfterAll
+    public static void setUpAfterAll(){}
 }

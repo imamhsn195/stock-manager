@@ -1,4 +1,4 @@
-package me.imamhasan.stockmanager.service.test.java.me.imamhasan.stockmanager.service;
+package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Supplier;
@@ -45,9 +45,9 @@ public class SupplierServiceImplTest {
     private AddressService addressService;
 
     @BeforeAll
-    public void clearProductTable() {}
+    public static void clearProductTable() {}
     @BeforeEach
-    private void beforeEachTest() {}
+    public void beforeEachTest() {}
     @Test
     public void testCreateSupplier() {
         Address address = new Address();
@@ -165,5 +165,5 @@ public class SupplierServiceImplTest {
     }
 
     @AfterAll
-    private void setUpAfterAll(){}
+    public static void setUpAfterAll(){}
 }

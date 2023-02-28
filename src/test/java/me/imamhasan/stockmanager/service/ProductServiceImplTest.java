@@ -1,4 +1,4 @@
-package me.imamhasan.stockmanager.service.test.java.me.imamhasan.stockmanager.service;
+package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.model.ProductCategory;
@@ -51,9 +51,9 @@ public class ProductServiceImplTest {
     private ProductServiceImpl productService;
 
     @BeforeAll
-    public void clearProductTable() {}
+    public static void clearProductTable() {}
     @BeforeEach
-    private void beforeEachTest() {}
+    public void beforeEachTest() {}
     @Test
     public void testGetAllProducts() {
         ProductCategory productCategory = new ProductCategory();
@@ -239,5 +239,5 @@ public class ProductServiceImplTest {
     }
 
     @AfterAll
-    private void setUpAfterAll(){}
+    public static void setUpAfterAll(){}
 }
