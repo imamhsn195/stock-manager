@@ -117,15 +117,10 @@ class OrderServiceImplTest {
 
         List<Order> orders = new ArrayList<>();
         orders.add(order);
-        orders.add(order);
+        orders.add(order1);
         orderRepository.saveAll(orders);
-
         Page<Order> savedOrders = orderService.getAllOrders(Pageable.ofSize(2));
-
-        assertNotNull(savedOrders);
-
-        fail("Need to complete following product list");
-
+        assertEquals(2, savedOrders.getTotalElements());
     }
 
     @Test
@@ -207,6 +202,44 @@ class OrderServiceImplTest {
 
     @Test
     void updateOrder() {
-        fail("Need to add testing codes");
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+        address = addressService.saveAddress(address);
+        assertNotNull(address.getId());
+
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setName("John Doe");
+        customer.setEmail("johndoe@example.com");
+        customer.setPhone("(123)456-7890");
+
+        Assertions.assertNotNull(address.getId());
+
+        customer.setAddress(address);
+
+        // save the customer
+        customer = customerService.saveCustomer(customer);
+        assertNotNull(customer.getId());
+
+        // create an order with the customer ID
+        Order order = new Order();
+        order.setCustomer(customer);
+        order.setOrderDate(LocalDate.now());
+
+        // save the order
+        order = orderService.saveOrder(order);
+
+        // assert that the order was saved successfully
+        assertNotNull(order.getId());
+
+        assertEquals("John Doe", order.getCustomer().getName());
+
+        assertEquals("123 Main St", order.getCustomer().getAddress().getStreet());
+
+
     }
 }
