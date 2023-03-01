@@ -171,6 +171,31 @@ public class SwaggerPayloads {
                 "orderDate" : "2022-01-25"
             }
         """;
+    public static final String PURCHASE_ITEM_POST_REQUEST_BODY = """
+                {
+                    "purchase" : {
+                        "id" : 1
+                    },
+                    "product" : {
+                        "id" : 1
+                    },
+                    "quantityPurchased" : 10,
+                    "purchaseDate" : "2022-01-25"
+                }
+            """;
+    public static final String PURCHASE_ITEM_PUT_REQUEST_BODY = """
+            {
+                "id" : 1,
+                "purchase" : {
+                        "id" : 1
+                    },
+                "product" : {
+                        "id" : 1
+                    },
+                "quantityPurchased" : 10,
+                "purchaseDate" : "2022-01-25"
+            }
+        """;
     public static final String PURCHASE_POST_REQUEST_BODY = """
             {
                 "purchaseDate" : "2023-01-12",
