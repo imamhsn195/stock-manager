@@ -5,6 +5,7 @@ import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Customer;
 import me.imamhasan.stockmanager.repository.AddressRepository;
 import me.imamhasan.stockmanager.repository.CustomerRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final AddressRepository addressRepository;
 
     @Override
-    public Customer saveCustomer(Customer customer) {
+    public Customer saveCustomer(@NotNull Customer customer) {
         if(customer.getAddress().getId() != null){
             Long addressId = customer.getAddress().getId();
             addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("Address not found with id " + addressId));
@@ -51,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) {
+    public Customer updateCustomer(@NotNull Customer customer) {
         customerRepository.findById(customer.getId())
                 .orElseThrow(() -> new IllegalStateException("Customer with id " + customer.getId() + " not found"));
         if(customer.getAddress().getId() != null){

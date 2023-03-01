@@ -7,6 +7,7 @@ import me.imamhasan.stockmanager.model.Order;
 import me.imamhasan.stockmanager.repository.AddressRepository;
 import me.imamhasan.stockmanager.repository.CustomerRepository;
 import me.imamhasan.stockmanager.repository.OrderRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class OrderServiceImpl implements OrderService{
 
 
     @Override
-    public Order saveOrder(Order order) {
+    public Order saveOrder(@NotNull Order order) {
 //        save the order
         if(order.getCustomer().getId() != null){
             Long customerId = order.getCustomer().getId();
@@ -65,7 +66,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order updateOrder(Order order) {
+    public Order updateOrder(@NotNull Order order) {
 //        find the order
         orderRepository.findById(order.getId())
                 .orElseThrow(() -> new IllegalStateException("Order with id " + order.getId() + " not found"));

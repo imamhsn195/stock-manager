@@ -5,6 +5,7 @@ import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.model.ProductCategory;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProduct(Product product) {
+    public Product addProduct(@NotNull Product product) {
         if(product.getProductCategory().getId() != null){
             Long productCategoryId = product.getProductCategory().getId();
             productCategoryRepository.findById(productCategoryId).orElseThrow(() -> new IllegalStateException("Product category not found with id " + productCategoryId));
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
         return ResponseEntity.ok().body("Product deleted successfully.");
     }
     @Override
-    public Product updateProduct(Product product) {
+    public Product updateProduct(@NotNull Product product) {
         productRepository.findById(product.getId()).orElseThrow(() -> new IllegalStateException("Product with id " + product.getId() + ""));
         if(product.getProductCategory().getId() != null){
             Long productCategoryId = product.getProductCategory().getId();

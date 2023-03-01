@@ -3,6 +3,7 @@ package me.imamhasan.stockmanager.service;
 import lombok.AllArgsConstructor;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.repository.AddressRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address updateAddress(Address address) {
+    public Address updateAddress(@NotNull Address address) {
         addressRepository.findById(address.getId())
                 .orElseThrow(() -> new IllegalStateException("Address with id " + address.getId() + " not found"));
         return addressRepository.save(address);

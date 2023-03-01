@@ -5,6 +5,7 @@ import me.imamhasan.stockmanager.model.OrderItem;
 import me.imamhasan.stockmanager.repository.OrderItemRepository;
 import me.imamhasan.stockmanager.repository.OrderRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class OrderItemServiceImpl implements OrderItemService{
     private final ProductRepository productRepository;
 
     @Override
-    public OrderItem saveOrderItem(OrderItem orderItem) {
+    public OrderItem saveOrderItem(@NotNull OrderItem orderItem) {
         //  validate order id
         if(orderItem.getOrder().getId() != null){
             Long orderId = orderItem.getOrder().getId();
@@ -55,7 +56,7 @@ public class OrderItemServiceImpl implements OrderItemService{
     }
 
     @Override
-    public OrderItem updateOrderItem(OrderItem orderItem) {
+    public OrderItem updateOrderItem(@NotNull OrderItem orderItem) {
         //  validate order id
         if(orderItem.getOrder().getId() != null){
             Long orderId = orderItem.getOrder().getId();

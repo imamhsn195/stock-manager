@@ -3,6 +3,7 @@ package me.imamhasan.stockmanager.service;
 import lombok.AllArgsConstructor;
 import me.imamhasan.stockmanager.model.ProductCategory;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public ProductCategory updateProductCategory(ProductCategory productCategory) {
+    public ProductCategory updateProductCategory(@NotNull ProductCategory productCategory) {
         productCategoryRepository.findById(productCategory.getId())
                 .orElseThrow(() -> new IllegalStateException("ProductCategory with id " + productCategory.getId() + " not found"));
         return productCategoryRepository.save(productCategory);
