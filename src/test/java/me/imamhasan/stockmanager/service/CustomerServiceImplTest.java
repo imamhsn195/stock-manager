@@ -35,12 +35,12 @@ public class CustomerServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
     @Autowired
-    private CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
     @Autowired
-    private CustomerServiceImpl customerService;
+    CustomerServiceImpl customerService;
 
     @Autowired
-    private AddressService addressService;
+    AddressService addressService;
 
     @BeforeAll
     public static void clearProductTable() {}

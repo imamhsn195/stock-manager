@@ -28,8 +28,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -43,12 +42,12 @@ public class ProductServiceImplTest {
     ApplicationContext applicationContext;
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
     @Autowired
-    private ProductCategoryRepository productCategoryRepository;
+    ProductCategoryRepository productCategoryRepository;
 
     @Autowired
-    private ProductServiceImpl productService;
+    ProductServiceImpl productService;
 
     @BeforeAll
     public static void clearProductTable() {}
@@ -57,7 +56,7 @@ public class ProductServiceImplTest {
     @Test
     public void testGetAllProducts() {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Product Category One");
+        productCategory.setName("Electronics");
         productCategoryRepository.save(productCategory);
 
         Product product = new Product();
@@ -106,7 +105,7 @@ public class ProductServiceImplTest {
     @Test
     public void testGetProductById() {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Product Category One");
+        productCategory.setName("Electronics");
         productCategoryRepository.save(productCategory);
 
         Product product = new Product();
@@ -133,15 +132,16 @@ public class ProductServiceImplTest {
     @Test
     public void testAddProduct() {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Product Category One");
+        productCategory.setName("Electronics");
         productCategoryRepository.save(productCategory);
+
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
         product.setPrice(BigDecimal.valueOf(5200));
         product.setQuantity(5);
         product.setProductCategory(productCategory);
-        Product savedProduct = productRepository.save(product);
+        Product savedProduct = productService.addProduct(product);
 
         Assert.assertNotNull(savedProduct.getId());
         Assert.assertNotNull(savedProduct.getProductCategory().getId());
@@ -154,7 +154,7 @@ public class ProductServiceImplTest {
     @Test
     public void testUpdateProduct() {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Product Category One");
+        productCategory.setName("Electronics");
         productCategoryRepository.save(productCategory);
 
         Product product = new Product();
@@ -206,10 +206,10 @@ public class ProductServiceImplTest {
 
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testDeleteProduct() {
+    @Test
+    public void testDeleteProduct() throws IllegalStateException{
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Product Category One");
+        productCategory.setName("Electronics");
         productCategoryRepository.save(productCategory);
 
         Product product = new Product();
@@ -222,9 +222,11 @@ public class ProductServiceImplTest {
 
         assertNotNull(savedProduct.getId());
 
-        productService.deleteProduct(savedProduct.getId());
+        productService.deleteProduct(1L);
 
-        productService.getProductById(savedProduct.getId());
+        assertThrows(IllegalStateException.class, ()->{
+            productService.getProductById(1L);
+        });
     }
 
     @Test(expected = IllegalStateException.class)

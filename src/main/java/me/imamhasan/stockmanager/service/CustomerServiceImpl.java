@@ -43,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> deleteCustomer(Long customerId) {
+    public ResponseEntity deleteCustomer(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalStateException("Customer with id:  ${customerId} not found"));
         customerRepository.delete(customer);
@@ -54,6 +54,13 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer updateCustomer(Customer customer) {
         customerRepository.findById(customer.getId())
                 .orElseThrow(() -> new IllegalStateException("Customer with id " + customer.getId() + " not found"));
+        if(customer.getAddress().getId() != null){
+            Long addressId = customer.getAddress().getId();
+            addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("Address not found with id " + addressId));
+        }else{
+            Address address = addressRepository.save(customer.getAddress());
+            customer.setAddress(address);
+        }
         return customerRepository.save(customer);
     }
 }

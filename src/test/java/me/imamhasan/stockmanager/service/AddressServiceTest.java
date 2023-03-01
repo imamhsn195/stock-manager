@@ -35,9 +35,9 @@ public class AddressServiceTest {
     @Autowired
     ApplicationContext applicationContext;
     @Autowired
-    private AddressRepository addressRepository;
+    AddressRepository addressRepository;
     @Autowired
-    private AddressServiceImpl addressService;
+    AddressServiceImpl addressService;
     @BeforeAll
     public static void clearProductTable() {}
     @BeforeEach

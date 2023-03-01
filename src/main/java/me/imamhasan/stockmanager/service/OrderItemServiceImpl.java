@@ -7,6 +7,7 @@ import me.imamhasan.stockmanager.repository.OrderRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -46,10 +47,11 @@ public class OrderItemServiceImpl implements OrderItemService{
     }
 
     @Override
-    public void deleteOrderItem(Long orderItemId) {
+    public ResponseEntity deleteOrderItem(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new IllegalStateException("Order with id " + orderItemId + " not found"));
-        orderItemRepository.deleteById(orderItemId);
+                .orElseThrow(() -> new IllegalStateException("Order item with id " + orderItemId + " not found"));
+        orderItemRepository.delete(orderItem);
+        return ResponseEntity.ok().body("Order item deleted successfully.");
     }
 
     @Override

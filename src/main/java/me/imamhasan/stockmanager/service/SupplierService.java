@@ -12,6 +12,6 @@ public interface SupplierService {
     Supplier saveSupplier(Supplier supplier);
     Page<Supplier> getAllSuppliers(Pageable pageable);
     Supplier getSupplierById(Long supplierId);
-    ResponseEntity<?> deleteSupplier(Long supplierId);
+    ResponseEntity deleteSupplier(Long supplierId);
     Supplier updateSupplier(Supplier supplier);
 }

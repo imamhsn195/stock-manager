@@ -33,7 +33,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public ResponseEntity<?> deleteProductCategory(Long productCategoryId) {
+    public ResponseEntity deleteProductCategory(Long productCategoryId) {
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new IllegalStateException("ProductCategory with id " + productCategoryId + " not found"));
         productCategoryRepository.delete(productCategory);

@@ -37,12 +37,11 @@ public class SupplierServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
     @Autowired
-    private SupplierRepository supplierRepository;
+    SupplierRepository supplierRepository;
     @Autowired
-    private SupplierServiceImpl supplierService;
-
+    SupplierServiceImpl supplierService;
     @Autowired
-    private AddressService addressService;
+    AddressService addressService;
 
     @BeforeAll
     public static void clearProductTable() {}

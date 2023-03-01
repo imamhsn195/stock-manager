@@ -9,6 +9,7 @@ import me.imamhasan.stockmanager.repository.CustomerRepository;
 import me.imamhasan.stockmanager.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -56,10 +57,11 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void deleteOrder(Long orderId) {
+    public ResponseEntity deleteOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalStateException("Order with id " + orderId + " not found"));
-        orderRepository.deleteById(orderId);
+        orderRepository.delete(order);
+        return ResponseEntity.ok().body("Order deleted successfully.");
     }
 
     @Override

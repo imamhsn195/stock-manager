@@ -230,7 +230,7 @@ class OrderServiceImplTest {
         // create an order with the customer ID
         Order order = new Order();
         order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
+        order.setOrderDate(LocalDate.parse("2023-01-20"));
 
         // save the order
         order = orderService.saveOrder(order);
@@ -242,6 +242,11 @@ class OrderServiceImplTest {
 
         assertEquals("123 Main St", order.getCustomer().getAddress().getStreet());
 
+        order.setOrderDate(order.getOrderDate().plusDays(2));
+
+        Order orderUpdated = orderService.updateOrder(order);
+
+        assertEquals(LocalDate.parse("2023-01-22"), orderUpdated.getOrderDate());
 
     }
     @AfterEach

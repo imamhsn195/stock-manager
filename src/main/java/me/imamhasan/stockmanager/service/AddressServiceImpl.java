@@ -33,7 +33,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public ResponseEntity<?> deleteAddress(Long addressId) {
+    public ResponseEntity deleteAddress(Long addressId) {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new IllegalStateException("Address with id " + addressId + " not found"));
         addressRepository.delete(address);

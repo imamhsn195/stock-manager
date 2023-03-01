@@ -42,7 +42,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public ResponseEntity<?> deleteSupplier(Long supplierId) {
+    public ResponseEntity deleteSupplier(Long supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new IllegalStateException("Supplier with id:  ${supplierId} not found"));
         supplierRepository.delete(supplier);
@@ -53,6 +53,13 @@ public class SupplierServiceImpl implements SupplierService {
     public Supplier updateSupplier(Supplier supplier) {
         supplierRepository.findById(supplier.getId())
                 .orElseThrow(() -> new IllegalStateException("Supplier with id " + supplier.getId() + " not found"));
+        if(supplier.getAddress().getId() != null){
+            Long addressId = supplier.getAddress().getId();
+            addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("Address not found with id " + addressId));
+        }else{
+            Address address = addressRepository.save(supplier.getAddress());
+            supplier.setAddress(address);
+        }
         return supplierRepository.save(supplier);
     }
 }
