@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static me.imamhasan.stockmanager.config.SwaggerPayloads.SUPPLIER_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.SUPPLIER_PUT_REQUEST_BODY;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -65,7 +66,7 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing supplier")
+    @ApiOperation(value = "Update an existing supplier", notes = SUPPLIER_PUT_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated supplier"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

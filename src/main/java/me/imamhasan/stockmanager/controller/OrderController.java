@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static me.imamhasan.stockmanager.config.SwaggerPayloads.ORDER_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.ORDER_PUT_REQUEST_BODY;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -61,7 +62,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing order")
+    @ApiOperation(value = "Update an existing order", notes = ORDER_PUT_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated order"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

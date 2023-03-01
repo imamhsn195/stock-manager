@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static me.imamhasan.stockmanager.config.SwaggerPayloads.PRODUCT_CATEGORY_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.PRODUCT_CATEGORY_PUT_REQUEST_BODY;
 
 @RestController
 @RequestMapping("/api/product_categories")
@@ -61,7 +62,7 @@ public class ProductCategoryController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing productCategory")
+    @ApiOperation(value = "Update an existing productCategory", notes = PRODUCT_CATEGORY_PUT_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated product category"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static me.imamhasan.stockmanager.config.SwaggerPayloads.ADDRESS_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.ADDRESS_PUT_REQUEST_BODY;
 
 @RestController
 @RequestMapping("/api/addresses")
@@ -65,7 +66,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing address")
+    @ApiOperation(value = "Update an existing address", notes = ADDRESS_PUT_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated address"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
