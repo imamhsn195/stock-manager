@@ -47,21 +47,19 @@ public class CustomerServiceImplTest {
     @BeforeEach
     public void beforeEachTest() {}
     @Test
-    public void testCreateCustomer() {
+    public void testSaveCustomer() {
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
         address.setState("CA");
         address.setCountry("USA");
         address.setZipCode("12345");
-        addressService.saveAddress(address);
 
         Customer customer = new Customer();
         customer.setId(1L);
         customer.setName("John Doe");
         customer.setEmail("johndoe@example.com");
         customer.setPhone("(123)456-7890");
-        assertNotNull(address.getId());
         customer.setAddress(address);
 
         Customer savedCustomer = customerService.saveCustomer(customer);
@@ -105,17 +103,23 @@ public class CustomerServiceImplTest {
         address.setState("CA");
         address.setCountry("USA");
         address.setZipCode("12345");
-        addressService.saveAddress(address);
+        address = addressService.saveAddress(address);
 
         Customer customer = new Customer();
-        customer.setId(1L);
         customer.setName("John Doe");
         customer.setEmail("johndoe@example.com");
         customer.setPhone("(123)456-7890");
-        assertNotNull(address.getId());
         customer.setAddress(address);
         Customer savedCustomer = customerService.saveCustomer(customer);
-        assertNotNull(savedCustomer);
+        assertNotNull(address.getId());
+        assertNotNull(savedCustomer.getId());
+
+        Address newAddress = new Address();
+        newAddress.setStreet("123 Main St");
+        newAddress.setCity("Anytown");
+        newAddress.setState("CA");
+        newAddress.setCountry("USA");
+        newAddress.setZipCode("12345");
 
         Customer updatedCustomer = new Customer();
         updatedCustomer.setId(savedCustomer.getId());

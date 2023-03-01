@@ -42,6 +42,22 @@ public class SwaggerPayloads {
                  }
             }
         """;
+    public static final String CUSTOMER_POST_REQUEST_BODY = """
+            
+            {
+                "name" : "John Doe",
+                "email" : "johndoe@example.com",
+                "phone" : "(123)456-7890",
+                "address" : { 
+                     "id" : 1,
+                     "street" : "123 Main St",
+                     "city" : "Anytown", 
+                     "state" : "CA", 
+                     "country" : "USA", 
+                     "zipCode" : "12345"
+                 }
+            }
+        """;
     public static final String ADDRESS_POST_REQUEST_BODY = """
             { 
                 "street" : "123 Main St",
@@ -65,6 +81,32 @@ public class SwaggerPayloads {
                     "email" : "johndoe@example.com",
                     "phone" : "(123)456-7890",
                     "address" : {
+                        "id" : 1
+                    }
+                }
+            }
+        """;
+    public static final String ORDER_ITEM_POST_REQUEST_BODY = """
+            {
+                "order" : {
+                        "id" : 1
+                    },
+                "product" : {
+                        "id" : 1
+                    },
+                "quantityOrdered" : 10,
+                "orderDate" : "2022-01-25"
+            }
+        """;
+
+    public static final String PURCHASE_POST_REQUEST_BODY = """
+            {
+                "purchaseDate" : "2023-01-12",
+                "supplier" : {
+                "name" : "John Doe",
+                "email" : "johndoe@example.com",
+                "phone" : "(123)456-7890",
+                "address" : {
                         "id" : 1
                     }
                 }

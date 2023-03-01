@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.CUSTOMER_POST_REQUEST_BODY;
 import static me.imamhasan.stockmanager.config.SwaggerPayloads.SUPPLIER_POST_REQUEST_BODY;
 
 @RestController
@@ -52,7 +53,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new customer", notes = SUPPLIER_POST_REQUEST_BODY)
+    @ApiOperation(value = "Add a new customer", notes = CUSTOMER_POST_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully added customer"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
