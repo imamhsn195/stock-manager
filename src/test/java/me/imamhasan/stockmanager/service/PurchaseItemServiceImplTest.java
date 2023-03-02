@@ -55,6 +55,8 @@ class PurchaseItemServiceImplTest {
     @Autowired
     PurchaseServiceImpl purchaseService;
     @Autowired
+    ProductServiceImpl productService;
+    @Autowired
     PurchaseItemServiceImpl purchaseItemService;
 
     @BeforeAll
@@ -75,10 +77,13 @@ class PurchaseItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(1500));
+        product.setSalePrice(BigDecimal.valueOf(2000));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
+        assertEquals(BigDecimal.valueOf(1500), product.getPurchasePrice());
+        assertEquals(BigDecimal.valueOf(2000), product.getSalePrice());
         assertNotNull(product.getId());
 
         Address address = new Address();
@@ -107,10 +112,15 @@ class PurchaseItemServiceImplTest {
 
         PurchaseItem purchaseItem = new PurchaseItem();
         purchaseItem.setPurchase(purchase);
+        product.setPurchasePrice(BigDecimal.valueOf(1800));
+        product.setSalePrice(BigDecimal.valueOf(2100));
         purchaseItem.setProduct(product);
         purchaseItem.setQuantityPurchased(10);
         purchaseItem = purchaseItemService.savePurchaseItem(purchaseItem);
         assertNotNull(purchaseItem.getId());
+        Product newProduct = productService.getProductById(1L);
+        assertEquals(BigDecimal.valueOf(1800), newProduct.getPurchasePrice());
+        assertEquals(BigDecimal.valueOf(2100), newProduct.getSalePrice());
     }
 
     @Test
@@ -123,7 +133,8 @@ class PurchaseItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(300));
+        product.setSalePrice(BigDecimal.valueOf(400));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -184,7 +195,8 @@ class PurchaseItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(450));
+        product.setSalePrice(BigDecimal.valueOf(500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -245,7 +257,8 @@ class PurchaseItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(850));
+        product.setSalePrice(BigDecimal.valueOf(900));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -306,7 +319,8 @@ class PurchaseItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(1020));
+        product.setSalePrice(BigDecimal.valueOf(1100));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);

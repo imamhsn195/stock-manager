@@ -11,8 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static me.imamhasan.stockmanager.config.SwaggerPayloads.ORDER_POST_REQUEST_BODY;
-import static me.imamhasan.stockmanager.config.SwaggerPayloads.ORDER_PUT_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.SALE_POST_REQUEST_BODY;
+import static me.imamhasan.stockmanager.config.SwaggerPayloads.SALE_PUT_REQUEST_BODY;
 
 @RestController
 @RequestMapping("/api/sales")
@@ -50,7 +50,7 @@ public class SaleController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new sale", notes = ORDER_POST_REQUEST_BODY)
+    @ApiOperation(value = "Add a new sale", notes = SALE_POST_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully added sale"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -62,7 +62,7 @@ public class SaleController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing sale", notes = ORDER_PUT_REQUEST_BODY)
+    @ApiOperation(value = "Update an existing sale", notes = SALE_PUT_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated sale"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

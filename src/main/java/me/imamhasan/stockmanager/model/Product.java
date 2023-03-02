@@ -1,4 +1,6 @@
 package me.imamhasan.stockmanager.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,12 +32,16 @@ public class Product {
     @Size(min = 1, max = 1000)
     private String description;
 
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.01", message = "Price should not be less than 0.01")
-    private BigDecimal price;
+    @NotNull(message = "Purchase price is required")
+    @DecimalMin(value = "0.01", message = "Purchase price should not be less than 0.01")
+    private BigDecimal purchasePrice;
+
+    @NotNull(message = "Sale price is required")
+    @DecimalMin(value = "0.01", message = "Sale Price should not be less than 0.01")
+    private BigDecimal salePrice;
+
 
     @NotNull(message = "Quantity is required")
-    @Min(value = 1, message = "Quantity should be at least 1")
     private Integer quantity;
 
     @OneToOne

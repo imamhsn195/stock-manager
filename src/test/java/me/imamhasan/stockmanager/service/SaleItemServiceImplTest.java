@@ -78,7 +78,8 @@ class SaleItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -110,6 +111,7 @@ class SaleItemServiceImplTest {
 
         SaleItem saleItem = new SaleItem();
         saleItem.setSale(sale);
+        saleItem.setPriceSold(BigDecimal.valueOf(152));
         saleItem.setProduct(product);
         saleItem.setQuantitySold(10);
         saleItem = saleItemService.saveSaleItem(saleItem);
@@ -126,7 +128,8 @@ class SaleItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -159,11 +162,13 @@ class SaleItemServiceImplTest {
         SaleItem saleItem1 = new SaleItem();
         saleItem1.setSale(sale);
         saleItem1.setProduct(product);
+        saleItem1.setPriceSold(BigDecimal.valueOf(152));
         saleItem1.setQuantitySold(10);
 
         SaleItem saleItem2 = new SaleItem();
         saleItem2.setSale(sale);
         saleItem2.setProduct(product);
+        saleItem2.setPriceSold(BigDecimal.valueOf(152));
         saleItem2.setQuantitySold(10);
 
         List<SaleItem> saleItems = new ArrayList<>();
@@ -187,7 +192,8 @@ class SaleItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -219,12 +225,14 @@ class SaleItemServiceImplTest {
 
         SaleItem saleItem1 = new SaleItem();
         saleItem1.setSale(sale);
+        saleItem1.setPriceSold(BigDecimal.valueOf(152));
         saleItem1.setProduct(product);
         saleItem1.setQuantitySold(10);
 
         SaleItem saleItem2 = new SaleItem();
         saleItem2.setSale(sale);
         saleItem2.setProduct(product);
+        saleItem2.setPriceSold(BigDecimal.valueOf(152));
         saleItem2.setQuantitySold(10);
 
         List<SaleItem> saleItems = new ArrayList<>();
@@ -248,7 +256,8 @@ class SaleItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -281,11 +290,13 @@ class SaleItemServiceImplTest {
         SaleItem saleItem1 = new SaleItem();
         saleItem1.setSale(sale);
         saleItem1.setProduct(product);
+        saleItem1.setPriceSold(BigDecimal.valueOf(152));
         saleItem1.setQuantitySold(10);
 
         SaleItem saleItem2 = new SaleItem();
         saleItem2.setSale(sale);
         saleItem2.setProduct(product);
+        saleItem2.setPriceSold(BigDecimal.valueOf(145));
         saleItem2.setQuantitySold(10);
 
         List<SaleItem> saleItems = new ArrayList<>();
@@ -309,7 +320,8 @@ class SaleItemServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
         product = productRepository.save(product);
@@ -341,6 +353,7 @@ class SaleItemServiceImplTest {
 
         SaleItem saleItem = new SaleItem();
         saleItem.setSale(sale);
+        saleItem.setPriceSold(BigDecimal.valueOf(152));
         saleItem.setProduct(product);
         saleItem.setQuantitySold(10);
         saleItemRepository.save(saleItem);

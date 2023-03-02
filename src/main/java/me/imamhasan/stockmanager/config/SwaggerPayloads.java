@@ -2,17 +2,18 @@ package me.imamhasan.stockmanager.config;
 
 public class SwaggerPayloads {
     public static final String PRODUCT_POST_REQUEST_BODY = """
-            {
-                "name": "Product One",
-                "description": "Product One description",
-                "productCategory" : {
-                    "id" : 1,
-                    "name": "Product Category"
-                },
-                "price": 10,
-                "quantity": 100
-            }
-        """;
+                {
+                    "name": "Product One",
+                    "description": "Product One description",
+                    "productCategory" : {
+                        "id" : 1,
+                        "name": "Product Category"
+                    },
+                    "purchasePrice": 120,
+                    "salePrice" : 150,
+                    "quantity": 100
+                }
+            """;
     public static final String PRODUCT_PUT_REQUEST_BODY = """
             {
                 "id" : 1,
@@ -22,7 +23,8 @@ public class SwaggerPayloads {
                     "id" : 1,
                     "name": "Product Category"
                 },
-                "price": 10,
+                "purchasePrice": 120,
+                "salePrice" : 150,
                 "quantity": 100
             }
         """;
@@ -36,8 +38,8 @@ public class SwaggerPayloads {
                      "id" : 1,
                      "street" : "123 Main St",
                      "city" : "Anytown",
-                     "state" : "CA", 
-                     "country" : "USA", 
+                     "state" : "CA",
+                     "country" : "USA",
                      "zipCode" : "12345"
                  }
             }
@@ -48,12 +50,12 @@ public class SwaggerPayloads {
                 "name" : "John Doe",
                 "email" : "johndoe@example.com",
                 "phone" : "(123)456-7890",
-                "address" : { 
+                "address" : {
                      "id" : 1,
                      "street" : "123 Main St",
-                     "city" : "Anytown", 
-                     "state" : "CA", 
-                     "country" : "USA", 
+                     "city" : "Anytown",
+                     "state" : "CA",
+                     "country" : "USA",
                      "zipCode" : "12345"
                  }
             }
@@ -119,9 +121,9 @@ public class SwaggerPayloads {
                 "name": "Product Category"
             }    
         """;
-    public static final String ORDER_POST_REQUEST_BODY = """
+    public static final String SALE_POST_REQUEST_BODY = """
             {
-                "orderDate" : "2023-01-12",
+                "saleDate" : "2023-01-12",
                 "customer" : {
                     "name" : "John Doe",
                     "email" : "johndoe@example.com",
@@ -132,10 +134,10 @@ public class SwaggerPayloads {
                 }
             }
         """;
-    public static final String ORDER_PUT_REQUEST_BODY = """
+    public static final String SALE_PUT_REQUEST_BODY = """
             {
                 "id" : 1,
-                "orderDate" : "2023-01-12",
+                "saleDate" : "2023-01-12",
                 "customer" : {
                     "name" : "John Doe",
                     "email" : "johndoe@example.com",
@@ -146,7 +148,7 @@ public class SwaggerPayloads {
                 }
             }
         """;
-    public static final String ORDER_ITEM_POST_REQUEST_BODY = """
+    public static final String SALE_ITEM_POST_REQUEST_BODY = """
             {
                 "sale" : {
                         "id" : 1
@@ -154,11 +156,11 @@ public class SwaggerPayloads {
                 "product" : {
                         "id" : 1
                     },
-                "quantityOrdered" : 10,
-                "orderDate" : "2022-01-25"
+                "quantitySold" : 10,
+                "priceSold" : 150
             }
         """;
-    public static final String ORDER_ITEM_PUT_REQUEST_BODY = """
+    public static final String SALE_ITEM_PUT_REQUEST_BODY = """
             {
                 "id" : 1,
                 "sale" : {
@@ -167,8 +169,8 @@ public class SwaggerPayloads {
                 "product" : {
                         "id" : 1
                     },
-                "quantityOrdered" : 10,
-                "orderDate" : "2022-01-25"
+                "quantitySold" : 10,
+                "quantityPrice" : 10
             }
         """;
     public static final String PURCHASE_ITEM_POST_REQUEST_BODY = """
@@ -177,25 +179,27 @@ public class SwaggerPayloads {
                         "id" : 1
                     },
                     "product" : {
-                        "id" : 1
+                        "id" : 1,
+                        "purchasePrice": 200,
+                        "salePrice" : 250
                     },
-                    "quantityPurchased" : 10,
-                    "purchaseDate" : "2022-01-25"
+                    "quantityPurchased" : 10
                 }
             """;
     public static final String PURCHASE_ITEM_PUT_REQUEST_BODY = """
-            {
-                "id" : 1,
-                "purchase" : {
-                        "id" : 1
-                    },
-                "product" : {
-                        "id" : 1
-                    },
-                "quantityPurchased" : 10,
-                "purchaseDate" : "2022-01-25"
-            }
-        """;
+                {
+                    "id" : 1,
+                    "purchase" : {
+                            "id" : 1
+                        },
+                    "product" : {
+                            "id" : 1,
+                            "purchasePrice": 200,
+                            "salePrice" : 250
+                        },
+                    "quantityPurchased" : 10
+                }
+            """;
     public static final String PURCHASE_POST_REQUEST_BODY = """
             {
                 "purchaseDate" : "2023-01-12",

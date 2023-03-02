@@ -1,6 +1,7 @@
 package me.imamhasan.stockmanager.service;
 
 import lombok.AllArgsConstructor;
+import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.model.SaleItem;
 import me.imamhasan.stockmanager.repository.SaleItemRepository;
 import me.imamhasan.stockmanager.repository.SaleRepository;
@@ -22,18 +23,22 @@ public class SaleItemServiceImpl implements SaleItemService{
     private final ProductRepository productRepository;
 
     @Override
-    public SaleItem saveSaleItem(@NotNull SaleItem SaleItem) {
+    public SaleItem saveSaleItem(@NotNull SaleItem saleItem) {
         //  validate Sale id
-        if(SaleItem.getSale().getId() != null){
-            Long SaleId = SaleItem.getSale().getId();
+        if(saleItem.getSale().getId() != null){
+            Long SaleId = saleItem.getSale().getId();
             saleRepository.findById(SaleId).orElseThrow(() -> new IllegalStateException("Sale not found with id " + SaleId));
         }
         //  validate product id
-        if(SaleItem.getProduct().getId() != null){
-            Long productId = SaleItem.getProduct().getId();
-            productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+        if(saleItem.getProduct().getId() != null){
+            Long productId = saleItem.getProduct().getId();
+            Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+            if(product.getQuantity() < saleItem.getQuantitySold()){throw new IllegalStateException("Available product quantity " + product.getQuantity() + " is less than quantity sold "+ saleItem.getQuantitySold() +".");}
+            Integer qty = product.getQuantity() - saleItem.getQuantitySold();
+            product.setQuantity(qty);
+            productRepository.save(product);
         }
-        return saleItemRepository.save(SaleItem);
+        return saleItemRepository.save(saleItem);
     }
 
     @Override
@@ -56,17 +61,23 @@ public class SaleItemServiceImpl implements SaleItemService{
     }
 
     @Override
-    public SaleItem updateSaleItem(@NotNull SaleItem SaleItem) {
+    public SaleItem updateSaleItem(@NotNull SaleItem saleItem) {
         //  validate Sale id
-        if(SaleItem.getSale().getId() != null){
-            Long SaleId = SaleItem.getSale().getId();
+        if(saleItem.getSale().getId() != null){
+            Long SaleId = saleItem.getSale().getId();
             saleRepository.findById(SaleId).orElseThrow(() -> new IllegalStateException("Sale not found with id " + SaleId));
         }
         //  validate product id
-        if(SaleItem.getProduct().getId() != null){
-            Long productId = SaleItem.getProduct().getId();
-            productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+        if(saleItem.getProduct().getId() != null){
+            Long productId = saleItem.getProduct().getId();
+            Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+            Integer previousQty = saleItemRepository.findById(saleItem.getId()).get().getQuantitySold();
+            if((product.getQuantity() + previousQty) < saleItem.getQuantitySold()){ throw new IllegalStateException("Available product quantity " + product.getQuantity() + previousQty +" is less than quantity sold "+ saleItem.getQuantitySold() +".");}
+            Integer qty = product.getQuantity() - saleItem.getQuantitySold() + previousQty;
+            product.setQuantity(qty);
+
+            productRepository.save(product);
         }
-        return saleItemRepository.save(SaleItem);
+        return saleItemRepository.save(saleItem);
     }
 }

@@ -62,16 +62,18 @@ public class ProductServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setProductCategory(productCategory);
         product.setQuantity(5);
 
         Product product1 = new Product();
         product1.setName("Apple AirPods Pro");
         product1.setDescription("The Apple AirPods Pro are wireless earbuds");
-        product1.setPrice(BigDecimal.valueOf(4500));
-        product1.setQuantity(10);
+        product1.setPurchasePrice(BigDecimal.valueOf(4200));
+        product1.setSalePrice(BigDecimal.valueOf(4500));
         product1.setProductCategory(productCategory);
+        product1.setQuantity(10);
 
         List<Product> products = new ArrayList<>();
         products.add(product);
@@ -88,7 +90,8 @@ public class ProductServiceImplTest {
         Assert.assertEquals(product.getId(), savedProduct.getId());
         Assert.assertEquals(product.getName(), savedProduct.getName());
         Assert.assertEquals(product.getDescription(), savedProduct.getDescription());
-        Assert.assertEquals(new BigDecimal("5200"), new BigDecimal(savedProduct.getPrice().toString()));
+        Assert.assertEquals(new BigDecimal("5200"), new BigDecimal(savedProduct.getPurchasePrice().toString()));
+        Assert.assertEquals(new BigDecimal("5500"), new BigDecimal(savedProduct.getSalePrice().toString()));
         Assert.assertEquals(product.getQuantity(), savedProduct.getQuantity());
 
         Product savedProduct1 = savedProducts.getContent().get(1);
@@ -96,7 +99,8 @@ public class ProductServiceImplTest {
         Assert.assertEquals(product1.getId(), savedProduct1.getId());
         Assert.assertEquals(product1.getName(), savedProduct1.getName());
         Assert.assertEquals(product1.getDescription(), savedProduct1.getDescription());
-        Assert.assertEquals(new BigDecimal("4500"), savedProduct1.getPrice());
+        Assert.assertEquals(new BigDecimal("4200"), savedProduct1.getPurchasePrice());
+        Assert.assertEquals(new BigDecimal("4500"), savedProduct1.getSalePrice());
         Assert.assertEquals(product1.getQuantity(), savedProduct1.getQuantity());
 
         Assert.assertEquals(products.size(), savedProducts.getSize());
@@ -111,7 +115,8 @@ public class ProductServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setQuantity(5);
         product.setProductCategory(productCategory);
         productRepository.save(product);
@@ -121,7 +126,8 @@ public class ProductServiceImplTest {
 
         Assert.assertNotNull(savedProduct);
         Assert.assertEquals(product.getName(), savedProduct.getName());
-        Assert.assertEquals(new BigDecimal("5200"), new BigDecimal(product.getPrice().toString()));
+        Assert.assertEquals(new BigDecimal("5200"), new BigDecimal(product.getPurchasePrice().toString()));
+        Assert.assertEquals(new BigDecimal("5500"), new BigDecimal(product.getSalePrice().toString()));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -138,7 +144,8 @@ public class ProductServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setQuantity(5);
         product.setProductCategory(productCategory);
         Product savedProduct = productService.addProduct(product);
@@ -147,7 +154,8 @@ public class ProductServiceImplTest {
         Assert.assertNotNull(savedProduct.getProductCategory().getId());
 
         Assert.assertEquals(product.getName(), savedProduct.getName());
-        Assert.assertEquals(new BigDecimal(String.valueOf(product.getPrice())), new BigDecimal(savedProduct.getPrice().toString()));
+        Assert.assertEquals(new BigDecimal(String.valueOf(product.getPurchasePrice())), new BigDecimal(savedProduct.getPurchasePrice().toString()));
+        Assert.assertEquals(new BigDecimal(String.valueOf(product.getSalePrice())), new BigDecimal(savedProduct.getSalePrice().toString()));
         Assert.assertEquals(product.getId().toString(), savedProduct.getId().toString());
     }
 
@@ -160,7 +168,8 @@ public class ProductServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setQuantity(5);
         product.setProductCategory(productCategory);
         Product savedProduct = productRepository.save(product);
@@ -170,7 +179,8 @@ public class ProductServiceImplTest {
 
         assertEquals("Dell XPS 13", savedProduct.getName());
         assertEquals("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability", savedProduct.getDescription());
-        assertEquals(new BigDecimal(5200), savedProduct.getPrice());
+        assertEquals(new BigDecimal(5200), savedProduct.getPurchasePrice());
+        assertEquals(new BigDecimal(5500), savedProduct.getSalePrice());
         assertEquals(Integer.valueOf("5"), savedProduct.getQuantity());
         assertEquals(product.getId(), savedProduct.getId());
 
@@ -180,7 +190,8 @@ public class ProductServiceImplTest {
         savedProduct.setProductCategory(productCategoryNew);
         savedProduct.setName("Apple AirPods Pro");
         savedProduct.setDescription("The Apple AirPods Pro are wireless earbuds");
-        savedProduct.setPrice(BigDecimal.valueOf(4500));
+        savedProduct.setPurchasePrice(BigDecimal.valueOf(4200));
+        savedProduct.setSalePrice(BigDecimal.valueOf(4500));
         savedProduct.setQuantity(10);
 
         Product updatedProduct = productService.updateProduct(savedProduct);
@@ -192,7 +203,8 @@ public class ProductServiceImplTest {
         assertEquals(updatedProduct.getProductCategory().getId(), savedProduct.getProductCategory().getId());
         assertEquals("Product category two", savedProduct.getProductCategory().getName());
         assertEquals("The Apple AirPods Pro are wireless earbuds", savedProduct.getDescription());
-        assertEquals(new BigDecimal(4500), savedProduct.getPrice());
+        assertEquals(new BigDecimal(4200), savedProduct.getPurchasePrice());
+        assertEquals(new BigDecimal(4500), savedProduct.getSalePrice());
         assertEquals(Integer.valueOf("10"), savedProduct.getQuantity());
     }
 
@@ -215,7 +227,8 @@ public class ProductServiceImplTest {
         Product product = new Product();
         product.setName("Dell XPS 13");
         product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPrice(BigDecimal.valueOf(5200));
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
         product.setQuantity(5);
         product.setProductCategory(productCategory);
         Product savedProduct = productRepository.save(product);

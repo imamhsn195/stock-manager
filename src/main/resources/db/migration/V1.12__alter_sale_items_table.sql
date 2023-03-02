@@ -1,0 +1,1 @@
+ALTER TABLE sale_items ADD price_sold DECIMAL(10,2) NOT NULL AFTER quantity_sold;

@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
             ProductCategory productCategory = productCategoryRepository.save(product.getProductCategory());
             product.setProductCategory(productCategory);
         }
+        product.setQuantity(0);
         return productRepository.save(product);
     }
     @Override
@@ -49,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public Product updateProduct(@NotNull Product product) {
-        productRepository.findById(product.getId()).orElseThrow(() -> new IllegalStateException("Product with id " + product.getId() + ""));
+        Integer previousQty = productRepository.findById(product.getId())
+                .orElseThrow(() -> new IllegalStateException("Product with id " + product.getId() + "")).getQuantity();
         if(product.getProductCategory().getId() != null){
             Long productCategoryId = product.getProductCategory().getId();
             productCategoryRepository.findById(productCategoryId).orElseThrow(() -> new IllegalStateException("Product category not found with id " + productCategoryId));
@@ -57,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
             ProductCategory productCategory = productCategoryRepository.save(product.getProductCategory());
             product.setProductCategory(productCategory);
         }
+        product.setQuantity(previousQty);
         return productRepository.save(product);
     }
 

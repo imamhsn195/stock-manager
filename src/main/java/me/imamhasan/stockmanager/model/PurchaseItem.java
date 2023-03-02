@@ -1,5 +1,6 @@
 package me.imamhasan.stockmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class PurchaseItem {
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     @NotNull(message = "Product is required.")
+    @JsonIgnoreProperties({"name", "description","product_category_id"})
     private Product product;
 
     @OneToOne

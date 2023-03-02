@@ -25,7 +25,6 @@ public class Address {
     @NotBlank
     private String street;
 
-//    @NotBlank
     private String city;
 
     @NotBlank
@@ -34,7 +33,6 @@ public class Address {
     @NotBlank
     private String country;
 
-//    @NotBlank
     private String zipCode;
 
     @CreationTimestamp

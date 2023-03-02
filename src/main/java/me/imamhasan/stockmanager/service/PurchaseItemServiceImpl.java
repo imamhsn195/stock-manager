@@ -1,6 +1,7 @@
 package me.imamhasan.stockmanager.service;
 
 import lombok.AllArgsConstructor;
+import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.model.PurchaseItem;
 import me.imamhasan.stockmanager.repository.PurchaseItemRepository;
 import me.imamhasan.stockmanager.repository.PurchaseRepository;
@@ -31,7 +32,12 @@ public class PurchaseItemServiceImpl implements PurchaseItemService{
         //  validate product id
         if(purchaseItem.getProduct().getId() != null){
             Long productId = purchaseItem.getProduct().getId();
-            productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+            Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+            Integer qty = product.getQuantity() + purchaseItem.getQuantityPurchased();
+            product.setQuantity(qty);
+            product.setPurchasePrice(purchaseItem.getProduct().getPurchasePrice());
+            product.setSalePrice(purchaseItem.getProduct().getSalePrice());
+            productRepository.save(product);
         }
         return purchaseItemRepository.save(purchaseItem);
     }
@@ -65,7 +71,14 @@ public class PurchaseItemServiceImpl implements PurchaseItemService{
         //  validate product id
         if(purchaseItem.getProduct().getId() != null){
             Long productId = purchaseItem.getProduct().getId();
-            productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+            Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product not found with id " + productId));
+            Integer previousQty = purchaseItemRepository.findById(purchaseItem.getId()).get().getQuantityPurchased();
+            Integer qty = product.getQuantity() + purchaseItem.getQuantityPurchased() - previousQty;
+            product.setQuantity(qty);
+            product.setPurchasePrice(purchaseItem.getProduct().getPurchasePrice());
+            product.setSalePrice(purchaseItem.getProduct().getSalePrice());
+
+            productRepository.save(product);
         }
         return purchaseItemRepository.save(purchaseItem);
     }

@@ -49,7 +49,7 @@ public class SaleItemController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add a new sale item", notes = ORDER_ITEM_POST_REQUEST_BODY)
+    @ApiOperation(value = "Add a new sale item", notes = SALE_ITEM_POST_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully added sale item"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -61,7 +61,7 @@ public class SaleItemController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update an existing sale item", notes = ORDER_ITEM_PUT_REQUEST_BODY)
+    @ApiOperation(value = "Update an existing sale item", notes = SALE_ITEM_PUT_REQUEST_BODY)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated sale item"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
