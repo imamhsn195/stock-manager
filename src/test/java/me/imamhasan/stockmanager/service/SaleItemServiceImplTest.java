@@ -1,12 +1,13 @@
 package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.*;
-import me.imamhasan.stockmanager.model.Order;
-import me.imamhasan.stockmanager.repository.OrderItemRepository;
-import me.imamhasan.stockmanager.repository.OrderRepository;
+import me.imamhasan.stockmanager.model.Sale;
+import me.imamhasan.stockmanager.repository.SaleItemRepository;
+import me.imamhasan.stockmanager.repository.SaleRepository;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
 
+import me.imamhasan.stockmanager.repository.SaleRepository;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class OrderItemServiceImplTest {
+class SaleItemServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
 
@@ -46,18 +47,18 @@ class OrderItemServiceImplTest {
     ProductRepository productRepository;
 
     @Autowired
-    OrderRepository orderRepository;
+    SaleRepository saleRepository;
 
     @Autowired
-    OrderItemRepository orderItemRepository;
+    SaleItemRepository saleItemRepository;
     @Autowired
     AddressServiceImpl addressService;
     @Autowired
     CustomerService customerService;
     @Autowired
-    OrderServiceImpl orderService;
+    SaleServiceImpl saleService;
     @Autowired
-    OrderItemServiceImpl orderItemService;
+    SaleItemServiceImpl saleItemService;
 
     @BeforeAll
     public static void setUpBeforeAll() {
@@ -68,7 +69,7 @@ class OrderItemServiceImplTest {
     public void beforeEachTest() {}
 
     @Test
-    void saveOrderItem() {
+    void saveSaleItem() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
         productCategory = productCategoryRepository.save(productCategory);
@@ -101,22 +102,22 @@ class OrderItemServiceImplTest {
         customer = customerService.saveCustomer(customer);
         assertNotNull(customer.getId());
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
-        order = orderService.saveOrder(order);
-        assertNotNull(order.getId());
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
+        sale = saleService.saveSale(sale);
+        assertNotNull(sale.getId());
 
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(order);
-        orderItem.setProduct(product);
-        orderItem.setQuantityOrdered(10);
-        orderItem = orderItemService.saveOrderItem(orderItem);
-        assertNotNull(orderItem.getId());
+        SaleItem saleItem = new SaleItem();
+        saleItem.setSale(sale);
+        saleItem.setProduct(product);
+        saleItem.setQuantitySold(10);
+        saleItem = saleItemService.saveSaleItem(saleItem);
+        assertNotNull(saleItem.getId());
     }
 
     @Test
-    void getAllOrderItems() {
+    void getAllSaleItems() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
         productCategory = productCategoryRepository.save(productCategory);
@@ -149,35 +150,35 @@ class OrderItemServiceImplTest {
         customer = customerService.saveCustomer(customer);
         assertNotNull(customer.getId());
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
-        order = orderService.saveOrder(order);
-        assertNotNull(order.getId());
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
+        sale = saleService.saveSale(sale);
+        assertNotNull(sale.getId());
 
-        OrderItem orderItem1 = new OrderItem();
-        orderItem1.setOrder(order);
-        orderItem1.setProduct(product);
-        orderItem1.setQuantityOrdered(10);
+        SaleItem saleItem1 = new SaleItem();
+        saleItem1.setSale(sale);
+        saleItem1.setProduct(product);
+        saleItem1.setQuantitySold(10);
 
-        OrderItem orderItem2 = new OrderItem();
-        orderItem2.setOrder(order);
-        orderItem2.setProduct(product);
-        orderItem2.setQuantityOrdered(10);
+        SaleItem saleItem2 = new SaleItem();
+        saleItem2.setSale(sale);
+        saleItem2.setProduct(product);
+        saleItem2.setQuantitySold(10);
 
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(orderItem1);
-        orderItems.add(orderItem2);
+        List<SaleItem> saleItems = new ArrayList<>();
+        saleItems.add(saleItem1);
+        saleItems.add(saleItem2);
 
-        orderItemRepository.saveAll(orderItems);
+        saleItemRepository.saveAll(saleItems);
 
-        Page<OrderItem> orderItemsSaved = orderItemService.getAllOrderItems(Pageable.ofSize(2));
+        Page<SaleItem> saleItemsSaved = saleItemService.getAllSaleItems(Pageable.ofSize(2));
 
-        assertEquals(2, orderItemsSaved.getTotalElements());
+        assertEquals(2, saleItemsSaved.getTotalElements());
     }
 
     @Test
-    void getOrderItemById() {
+    void getSaleItemById() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
         productCategory = productCategoryRepository.save(productCategory);
@@ -210,35 +211,35 @@ class OrderItemServiceImplTest {
         customer = customerService.saveCustomer(customer);
         assertNotNull(customer.getId());
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
-        order = orderService.saveOrder(order);
-        assertNotNull(order.getId());
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
+        sale = saleService.saveSale(sale);
+        assertNotNull(sale.getId());
 
-        OrderItem orderItem1 = new OrderItem();
-        orderItem1.setOrder(order);
-        orderItem1.setProduct(product);
-        orderItem1.setQuantityOrdered(10);
+        SaleItem saleItem1 = new SaleItem();
+        saleItem1.setSale(sale);
+        saleItem1.setProduct(product);
+        saleItem1.setQuantitySold(10);
 
-        OrderItem orderItem2 = new OrderItem();
-        orderItem2.setOrder(order);
-        orderItem2.setProduct(product);
-        orderItem2.setQuantityOrdered(10);
+        SaleItem saleItem2 = new SaleItem();
+        saleItem2.setSale(sale);
+        saleItem2.setProduct(product);
+        saleItem2.setQuantitySold(10);
 
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(orderItem1);
-        orderItems.add(orderItem2);
+        List<SaleItem> saleItems = new ArrayList<>();
+        saleItems.add(saleItem1);
+        saleItems.add(saleItem2);
 
-        orderItemRepository.saveAll(orderItems);
+        saleItemRepository.saveAll(saleItems);
 
-        OrderItem orderItem = orderItemService.getOrderItemById(1L);
+        SaleItem saleItem = saleItemService.getSaleItemById(1L);
 
-        assertNotNull(orderItem);
+        assertNotNull(saleItem);
     }
 
     @Test
-    void deleteOrderItem() throws IllegalStateException{
+    void deleteSaleItem() throws IllegalStateException{
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
         productCategory = productCategoryRepository.save(productCategory);
@@ -271,35 +272,35 @@ class OrderItemServiceImplTest {
         customer = customerService.saveCustomer(customer);
         assertNotNull(customer.getId());
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
-        order = orderService.saveOrder(order);
-        assertNotNull(order.getId());
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
+        sale = saleService.saveSale(sale);
+        assertNotNull(sale.getId());
 
-        OrderItem orderItem1 = new OrderItem();
-        orderItem1.setOrder(order);
-        orderItem1.setProduct(product);
-        orderItem1.setQuantityOrdered(10);
+        SaleItem saleItem1 = new SaleItem();
+        saleItem1.setSale(sale);
+        saleItem1.setProduct(product);
+        saleItem1.setQuantitySold(10);
 
-        OrderItem orderItem2 = new OrderItem();
-        orderItem2.setOrder(order);
-        orderItem2.setProduct(product);
-        orderItem2.setQuantityOrdered(10);
+        SaleItem saleItem2 = new SaleItem();
+        saleItem2.setSale(sale);
+        saleItem2.setProduct(product);
+        saleItem2.setQuantitySold(10);
 
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(orderItem1);
-        orderItems.add(orderItem2);
+        List<SaleItem> saleItems = new ArrayList<>();
+        saleItems.add(saleItem1);
+        saleItems.add(saleItem2);
 
-        orderItemRepository.saveAll(orderItems);
-        orderItemService.deleteOrderItem(1L);
+        saleItemRepository.saveAll(saleItems);
+        saleItemService.deleteSaleItem(1L);
         assertThrows(IllegalStateException.class, ()->{
-            orderItemService.getOrderItemById(1L);
+            saleItemService.getSaleItemById(1L);
         });
     }
 
     @Test
-    void updateOrderItem() {
+    void updateSaleItem() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
         productCategory = productCategoryRepository.save(productCategory);
@@ -332,35 +333,35 @@ class OrderItemServiceImplTest {
         customer = customerService.saveCustomer(customer);
         assertNotNull(customer.getId());
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
-        order = orderService.saveOrder(order);
-        assertNotNull(order.getId());
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
+        sale = saleService.saveSale(sale);
+        assertNotNull(sale.getId());
 
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(order);
-        orderItem.setProduct(product);
-        orderItem.setQuantityOrdered(10);
-        orderItemRepository.save(orderItem);
-        assertNotNull(orderItem.getId());
+        SaleItem saleItem = new SaleItem();
+        saleItem.setSale(sale);
+        saleItem.setProduct(product);
+        saleItem.setQuantitySold(10);
+        saleItemRepository.save(saleItem);
+        assertNotNull(saleItem.getId());
 
-        OrderItem orderItemSaved = orderItemService.getOrderItemById(1L);
-        assertEquals(10, orderItemSaved.getQuantityOrdered());
+        SaleItem saleItemSaved = saleItemService.getSaleItemById(1L);
+        assertEquals(10, saleItemSaved.getQuantitySold());
 
-        orderItemSaved.setQuantityOrdered(15);
-        orderItemService.updateOrderItem(orderItemSaved);
+        saleItemSaved.setQuantitySold(15);
+        saleItemService.updateSaleItem(saleItemSaved);
 
-        OrderItem orderItemUpdated = orderItemService.getOrderItemById(1L);
+        SaleItem saleItemUpdated = saleItemService.getSaleItemById(1L);
 
-        assertEquals(15, orderItemSaved.getQuantityOrdered());
+        assertEquals(15, saleItemSaved.getQuantitySold());
 
     }
 
     @AfterEach
     public void clearDatabase() {
-        orderItemRepository.deleteAll();
-        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE order_items ALTER COLUMN id RESTART WITH 1");
+        saleItemRepository.deleteAll();
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE sale_items ALTER COLUMN id RESTART WITH 1");
     }
 
     @AfterAll

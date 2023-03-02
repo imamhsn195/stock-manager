@@ -148,7 +148,7 @@ public class SwaggerPayloads {
         """;
     public static final String ORDER_ITEM_POST_REQUEST_BODY = """
             {
-                "order" : {
+                "sale" : {
                         "id" : 1
                     },
                 "product" : {
@@ -161,7 +161,7 @@ public class SwaggerPayloads {
     public static final String ORDER_ITEM_PUT_REQUEST_BODY = """
             {
                 "id" : 1,
-                "order" : {
+                "sale" : {
                         "id" : 1
                     },
                 "product" : {

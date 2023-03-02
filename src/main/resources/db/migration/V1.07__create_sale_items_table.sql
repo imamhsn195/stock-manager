@@ -1,12 +1,12 @@
-CREATE TABLE order_items(
+CREATE TABLE sale_items(
   id INT NOT NULL AUTO_INCREMENT,
-  order_id INT NOT NULL,
+  sale_id INT NOT NULL,
   product_id INT NOT NULL,
-  quantity_ordered INT NOT NULL,
+  quantity_sold INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (sale_id) REFERENCES sales(id),
   FOREIGN KEY (product_id) REFERENCES products(id)
 );

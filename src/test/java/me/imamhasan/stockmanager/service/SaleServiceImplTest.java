@@ -2,8 +2,8 @@ package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Customer;
-import me.imamhasan.stockmanager.model.Order;
-import me.imamhasan.stockmanager.repository.OrderRepository;
+import me.imamhasan.stockmanager.model.Sale;
+import me.imamhasan.stockmanager.repository.SaleRepository;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +30,17 @@ import static org.junit.Assert.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class OrderServiceImplTest {
+class SaleServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
 
     @Autowired
     CustomerService customerService;
     @Autowired
-    OrderServiceImpl orderService;
+    SaleServiceImpl saleService;
 
     @Autowired
-    OrderRepository orderRepository;
+    SaleRepository saleRepository;
 
     @Autowired
     AddressServiceImpl addressService;
@@ -51,7 +51,7 @@ class OrderServiceImplTest {
     public void beforeEachTest() {}
 
     @Test()
-    void saveOrder() {
+    void saveSale() {
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
@@ -73,20 +73,20 @@ class OrderServiceImplTest {
         // save the customer
         customer = customerService.saveCustomer(customer);
 
-        // create an order with the customer ID
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
+        // create a sale with the customer ID
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
 
-        // save the order
-        order = orderService.saveOrder(order);
+        // save the sale
+        sale = saleService.saveSale(sale);
 
-        // assert that the order was saved successfully
-        assertNotNull(order.getId());
+        // assert that the sale was saved successfully
+        assertNotNull(sale.getId());
     }
 
     @Test
-    void getAllOrders() {
+    void getAllSales() {
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
@@ -108,25 +108,25 @@ class OrderServiceImplTest {
         // save the customer
         customer = customerService.saveCustomer(customer);
 
-        // create an order with the customer ID
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
+        // create a sale with the customer ID
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
 
-        Order order1 = new Order();
-        order1.setCustomer(customer);
-        order1.setOrderDate(LocalDate.now());
+        Sale sale1 = new Sale();
+        sale1.setCustomer(customer);
+        sale1.setSaleDate(LocalDate.now());
 
-        List<Order> orders = new ArrayList<>();
-        orders.add(order);
-        orders.add(order1);
-        orderRepository.saveAll(orders);
-        Page<Order> savedOrders = orderService.getAllOrders(Pageable.ofSize(2));
-        assertEquals(2, savedOrders.getTotalElements());
+        List<Sale> sales = new ArrayList<>();
+        sales.add(sale);
+        sales.add(sale1);
+        saleRepository.saveAll(sales);
+        Page<Sale> savedSales = saleService.getAllSales(Pageable.ofSize(2));
+        assertEquals(2, savedSales.getTotalElements());
     }
 
     @Test
-    void getOrderById() {
+    void getSaleById() {
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
@@ -148,19 +148,19 @@ class OrderServiceImplTest {
         // save the customer
         customer = customerService.saveCustomer(customer);
 
-        // create an order with the customer ID
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
+        // create a sale with the customer ID
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
 
-        // save the order
-        order = orderRepository.save(order);
+        // save the sale
+        sale = saleRepository.save(sale);
 
-        assertNotNull(orderService.getOrderById(order.getId()));
+        assertNotNull(saleService.getSaleById(sale.getId()));
     }
 
     @Test
-    void deleteOrder() throws IllegalStateException{
+    void deleteSale() throws IllegalStateException{
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
@@ -182,28 +182,28 @@ class OrderServiceImplTest {
         // save the customer
         customer = customerService.saveCustomer(customer);
 
-        // create an order with the customer ID
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.now());
+        // create a sale with the customer ID
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
 
-        // save the order
-        order = orderService.saveOrder(order);
+        // save the sale
+        sale = saleService.saveSale(sale);
 
-        // assert that the order was saved successfully
-        assertNotNull(order.getId());
+        // assert that the sale was saved successfully
+        assertNotNull(sale.getId());
 
-        Long id = order.getId();
-        orderService.deleteOrder(order.getId());
+        Long id = sale.getId();
+        saleService.deleteSale(sale.getId());
 
         assertThrows(IllegalStateException.class, ()->{
-            orderService.getOrderById(id);
+            saleService.getSaleById(id);
         });
 
     }
 
     @Test
-    void updateOrder() {
+    void updateSale() {
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
@@ -227,32 +227,32 @@ class OrderServiceImplTest {
         customer = customerService.saveCustomer(customer);
         assertNotNull(customer.getId());
 
-        // create an order with the customer ID
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setOrderDate(LocalDate.parse("2023-01-20"));
+        // create a sale with the customer ID
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.parse("2023-01-20"));
 
-        // save the order
-        order = orderService.saveOrder(order);
+        // save the sale
+        sale = saleService.saveSale(sale);
 
-        // assert that the order was saved successfully
-        assertNotNull(order.getId());
+        // assert that the sale was saved successfully
+        assertNotNull(sale.getId());
 
-        assertEquals("John Doe", order.getCustomer().getName());
+        assertEquals("John Doe", sale.getCustomer().getName());
 
-        assertEquals("123 Main St", order.getCustomer().getAddress().getStreet());
+        assertEquals("123 Main St", sale.getCustomer().getAddress().getStreet());
 
-        order.setOrderDate(order.getOrderDate().plusDays(2));
+        sale.setSaleDate(sale.getSaleDate().plusDays(2));
 
-        Order orderUpdated = orderService.updateOrder(order);
+        Sale saleUpdated = saleService.updateSale(sale);
 
-        assertEquals(LocalDate.parse("2023-01-22"), orderUpdated.getOrderDate());
+        assertEquals(LocalDate.parse("2023-01-22"), saleUpdated.getSaleDate());
 
     }
     @AfterEach
     public void clearDatabase() {
-        orderRepository.deleteAll();
-        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE orders ALTER COLUMN id RESTART WITH 1");
+        saleRepository.deleteAll();
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE sales ALTER COLUMN id RESTART WITH 1");
     }
     @AfterAll
     public static void setUpAfterAll(){}

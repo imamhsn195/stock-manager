@@ -8,31 +8,36 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 @Data
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
-public class Order{
+@Table(name = "sale_items")
+public class SaleItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    @NotNull(message = "Customer is required.")
-    private Customer customer;
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "Product is required.")
+    private Product product;
 
+    @OneToOne
+    @JoinColumn(name = "sale_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "Sale is required.")
+    private Sale sale;
 
-    @Column(name = "order_date", nullable = false)
-    private LocalDate orderDate;
-
+    @NotNull(message = "Quantity is required")
+    @Min(value = 1, message = "Quantity should be at least 1")
+    @Column(name = "quantity_sold", nullable = false)
+    private Integer quantitySold;
 
     @CreationTimestamp
     @Column(name = "created_at",updatable = false)
