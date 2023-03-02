@@ -1,12 +1,9 @@
 package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.*;
-import me.imamhasan.stockmanager.model.Sale;
-import me.imamhasan.stockmanager.repository.SaleItemRepository;
-import me.imamhasan.stockmanager.repository.SaleRepository;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
-
+import me.imamhasan.stockmanager.repository.SaleItemRepository;
 import me.imamhasan.stockmanager.repository.SaleRepository;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
@@ -22,7 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,6 +32,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
 class SaleItemServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
@@ -69,6 +67,7 @@ class SaleItemServiceImplTest {
     public void beforeEachTest() {}
 
     @Test
+    @Order(1)
     void saveSaleItem() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -113,12 +112,13 @@ class SaleItemServiceImplTest {
         saleItem.setSale(sale);
         saleItem.setPriceSold(BigDecimal.valueOf(152));
         saleItem.setProduct(product);
-        saleItem.setQuantitySold(10);
+        saleItem.setQuantitySold(4);
         saleItem = saleItemService.saveSaleItem(saleItem);
         assertNotNull(saleItem.getId());
     }
 
     @Test
+    @Order(2)
     void getAllSaleItems() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
