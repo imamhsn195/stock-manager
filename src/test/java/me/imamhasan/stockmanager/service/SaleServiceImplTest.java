@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static config.TestConstants.*;
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -30,6 +31,7 @@ import static org.junit.Assert.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DisplayName(SALE_TESTING_CLASS_DISPLAY_NAME)
 class SaleServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
@@ -51,6 +53,8 @@ class SaleServiceImplTest {
     public void beforeEachTest() {}
 
     @Test()
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
     void saveSale() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -86,6 +90,8 @@ class SaleServiceImplTest {
     }
 
     @Test
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
     void getAllSales() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -126,6 +132,8 @@ class SaleServiceImplTest {
     }
 
     @Test
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
     void getSaleById() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -160,49 +168,8 @@ class SaleServiceImplTest {
     }
 
     @Test
-    void deleteSale() throws IllegalStateException{
-        Address address = new Address();
-        address.setStreet("123 Main St");
-        address.setCity("Anytown");
-        address.setState("CA");
-        address.setCountry("USA");
-        address.setZipCode("12345");
-        address = addressService.saveAddress(address);
-
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("John Doe");
-        customer.setEmail("johndoe@example.com");
-        customer.setPhone("(123)456-7890");
-
-        Assertions.assertNotNull(address.getId());
-
-        customer.setAddress(address);
-
-        // save the customer
-        customer = customerService.saveCustomer(customer);
-
-        // create a sale with the customer ID
-        Sale sale = new Sale();
-        sale.setCustomer(customer);
-        sale.setSaleDate(LocalDate.now());
-
-        // save the sale
-        sale = saleService.saveSale(sale);
-
-        // assert that the sale was saved successfully
-        assertNotNull(sale.getId());
-
-        Long id = sale.getId();
-        saleService.deleteSale(sale.getId());
-
-        assertThrows(IllegalStateException.class, ()->{
-            saleService.getSaleById(id);
-        });
-
-    }
-
-    @Test
+    @Order(UPDATE_RECORD_TESTING_ORDER)
+    @DisplayName(UPDATE_RECORD_TESTING_DISPLAY_NAME)
     void updateSale() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -249,6 +216,51 @@ class SaleServiceImplTest {
         assertEquals(LocalDate.parse("2023-01-22"), saleUpdated.getSaleDate());
 
     }
+    @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
+    void deleteSale() throws IllegalStateException{
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+        address = addressService.saveAddress(address);
+
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setName("John Doe");
+        customer.setEmail("johndoe@example.com");
+        customer.setPhone("(123)456-7890");
+
+        Assertions.assertNotNull(address.getId());
+
+        customer.setAddress(address);
+
+        // save the customer
+        customer = customerService.saveCustomer(customer);
+
+        // create a sale with the customer ID
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+        sale.setSaleDate(LocalDate.now());
+
+        // save the sale
+        sale = saleService.saveSale(sale);
+
+        // assert that the sale was saved successfully
+        assertNotNull(sale.getId());
+
+        Long id = sale.getId();
+        saleService.deleteSale(sale.getId());
+
+        assertThrows(IllegalStateException.class, ()->{
+            saleService.getSaleById(id);
+        });
+
+    }
+
     @AfterEach
     public void clearDatabase() {
         saleRepository.deleteAll();

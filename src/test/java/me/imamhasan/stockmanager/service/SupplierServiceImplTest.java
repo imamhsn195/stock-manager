@@ -3,13 +3,7 @@ package me.imamhasan.stockmanager.service;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Supplier;
 import me.imamhasan.stockmanager.repository.SupplierRepository;
-import me.imamhasan.stockmanager.service.AddressService;
-import me.imamhasan.stockmanager.service.SupplierServiceImpl;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -24,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 
+import static config.TestConstants.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -32,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class SupplierServiceImplTest {
+@DisplayName(SUPPLIER_TESTING_CLASS_DISPLAY_NAME)
+class SupplierServiceImplTest {
 
     @Autowired
     ApplicationContext applicationContext;
@@ -44,10 +41,12 @@ public class SupplierServiceImplTest {
     AddressService addressService;
 
     @BeforeAll
-    public static void clearProductTable() {}
+    public static void setUpBeforeAll() {}
     @BeforeEach
-    public void beforeEachTest() {}
+    public void setUpBeforeEach() {}
     @Test
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
     public void testCreateSupplier() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -74,6 +73,8 @@ public class SupplierServiceImplTest {
     }
 
     @Test
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
     public void testFindAllSuppliers() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -99,6 +100,31 @@ public class SupplierServiceImplTest {
     }
 
     @Test
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
+    void getSupplierById() {
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+        addressService.saveAddress(address);
+
+        Supplier supplier = new Supplier();
+        supplier.setName("John Doe");
+        supplier.setEmail("johndoe@example.com");
+        supplier.setPhone("(123)456-7890");
+        assertNotNull(address.getId());
+        supplier.setAddress(address);
+        supplierService.saveSupplier(supplier);
+
+        Supplier supplierSaved = supplierService.getSupplierById(1L);
+        assertNotNull(supplierSaved);
+    }
+    @Test
+    @Order(UPDATE_RECORD_TESTING_ORDER)
+    @DisplayName(UPDATE_RECORD_TESTING_DISPLAY_NAME)
     public void testUpdateSupplier() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -135,6 +161,8 @@ public class SupplierServiceImplTest {
     }
 
     @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
     public void testDeleteSupplier() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -158,9 +186,9 @@ public class SupplierServiceImplTest {
         });
     }
     @AfterEach
-    public void clearDatabase() {
+    public void setUpAfterEach() {
         supplierRepository.deleteAll();
-        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE supplier ALTER COLUMN id RESTART WITH 1");
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE suppliers ALTER COLUMN id RESTART WITH 1");
     }
 
     @AfterAll

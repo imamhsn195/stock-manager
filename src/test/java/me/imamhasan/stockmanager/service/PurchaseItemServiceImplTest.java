@@ -1,11 +1,9 @@
 package me.imamhasan.stockmanager.service;
 
-import me.imamhasan.stockmanager.model.Purchase;
 import me.imamhasan.stockmanager.model.*;
-import me.imamhasan.stockmanager.repository.PurchaseItemRepository;
-import me.imamhasan.stockmanager.repository.PurchaseRepository;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
+import me.imamhasan.stockmanager.repository.PurchaseItemRepository;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static config.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -33,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DisplayName(PURCHASE_ITEM_TESTING_CLASS_DISPLAY_NAME)
 class PurchaseItemServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
@@ -42,9 +42,6 @@ class PurchaseItemServiceImplTest {
 
     @Autowired
     ProductRepository productRepository;
-
-    @Autowired
-    PurchaseRepository purchaseRepository;
 
     @Autowired
     PurchaseItemRepository purchaseItemRepository;
@@ -60,14 +57,14 @@ class PurchaseItemServiceImplTest {
     PurchaseItemServiceImpl purchaseItemService;
 
     @BeforeAll
-    public static void setUpBeforeAll() {
-
-    }
+    public static void setUpBeforeAll() {}
 
     @BeforeEach
     public void beforeEachTest() {}
 
     @Test
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
     void savePurchaseItem() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -124,6 +121,8 @@ class PurchaseItemServiceImplTest {
     }
 
     @Test
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
     void getAllPurchaseItems() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -186,6 +185,8 @@ class PurchaseItemServiceImplTest {
     }
 
     @Test
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
     void getPurchaseItemById() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -246,8 +247,71 @@ class PurchaseItemServiceImplTest {
 
         assertNotNull(purchaseItem);
     }
+    @Test
+    @Order(UPDATE_RECORD_TESTING_ORDER)
+    @DisplayName(UPDATE_RECORD_TESTING_DISPLAY_NAME)
+    void updatePurchaseItem() {
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setName("Electronics");
+        productCategory = productCategoryRepository.save(productCategory);
+        assertNotNull(productCategory.getId());
+
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPurchasePrice(BigDecimal.valueOf(1020));
+        product.setSalePrice(BigDecimal.valueOf(1100));
+        product.setProductCategory(productCategory);
+        product.setQuantity(5);
+        product = productRepository.save(product);
+        assertNotNull(product.getId());
+
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+        address = addressService.saveAddress(address);
+        assertNotNull(address.getId());
+
+        Supplier supplier = new Supplier();
+        supplier.setId(1L);
+        supplier.setName("John Doe");
+        supplier.setEmail("johndoe@example.com");
+        supplier.setAddress(address);
+        supplier.setPhone("(123)456-7890");
+        supplier = supplierService.saveSupplier(supplier);
+        assertNotNull(supplier.getId());
+
+        Purchase purchase = new Purchase();
+        purchase.setSupplier(supplier);
+        purchase.setPurchaseDate(LocalDate.now());
+        purchase = purchaseService.savePurchase(purchase);
+        assertNotNull(purchase.getId());
+
+        PurchaseItem purchaseItem = new PurchaseItem();
+        purchaseItem.setPurchase(purchase);
+        purchaseItem.setProduct(product);
+        purchaseItem.setQuantityPurchased(10);
+        purchaseItemRepository.save(purchaseItem);
+        assertNotNull(purchaseItem.getId());
+
+        PurchaseItem purchaseItemSaved = purchaseItemService.getPurchaseItemById(1L);
+        assertEquals(10, purchaseItemSaved.getQuantityPurchased());
+
+        purchaseItemSaved.setQuantityPurchased(15);
+        purchaseItemService.updatePurchaseItem(purchaseItemSaved);
+
+        PurchaseItem purchaseItemUpdated = purchaseItemService.getPurchaseItemById(1L);
+
+        assertEquals(15, purchaseItemSaved.getQuantityPurchased());
+
+    }
 
     @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
     void deletePurchaseItem() throws IllegalStateException{
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -307,66 +371,6 @@ class PurchaseItemServiceImplTest {
         assertThrows(IllegalStateException.class, ()->{
             purchaseItemService.getPurchaseItemById(1L);
         });
-    }
-
-    @Test
-    void updatePurchaseItem() {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Electronics");
-        productCategory = productCategoryRepository.save(productCategory);
-        assertNotNull(productCategory.getId());
-
-        Product product = new Product();
-        product.setName("Dell XPS 13");
-        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPurchasePrice(BigDecimal.valueOf(1020));
-        product.setSalePrice(BigDecimal.valueOf(1100));
-        product.setProductCategory(productCategory);
-        product.setQuantity(5);
-        product = productRepository.save(product);
-        assertNotNull(product.getId());
-
-        Address address = new Address();
-        address.setStreet("123 Main St");
-        address.setCity("Anytown");
-        address.setState("CA");
-        address.setCountry("USA");
-        address.setZipCode("12345");
-        address = addressService.saveAddress(address);
-        assertNotNull(address.getId());
-
-        Supplier supplier = new Supplier();
-        supplier.setId(1L);
-        supplier.setName("John Doe");
-        supplier.setEmail("johndoe@example.com");
-        supplier.setAddress(address);
-        supplier.setPhone("(123)456-7890");
-        supplier = supplierService.saveSupplier(supplier);
-        assertNotNull(supplier.getId());
-
-        Purchase purchase = new Purchase();
-        purchase.setSupplier(supplier);
-        purchase.setPurchaseDate(LocalDate.now());
-        purchase = purchaseService.savePurchase(purchase);
-        assertNotNull(purchase.getId());
-
-        PurchaseItem purchaseItem = new PurchaseItem();
-        purchaseItem.setPurchase(purchase);
-        purchaseItem.setProduct(product);
-        purchaseItem.setQuantityPurchased(10);
-        purchaseItemRepository.save(purchaseItem);
-        assertNotNull(purchaseItem.getId());
-
-        PurchaseItem purchaseItemSaved = purchaseItemService.getPurchaseItemById(1L);
-        assertEquals(10, purchaseItemSaved.getQuantityPurchased());
-
-        purchaseItemSaved.setQuantityPurchased(15);
-        purchaseItemService.updatePurchaseItem(purchaseItemSaved);
-
-        PurchaseItem purchaseItemUpdated = purchaseItemService.getPurchaseItemById(1L);
-
-        assertEquals(15, purchaseItemSaved.getQuantityPurchased());
-
     }
 
     @AfterEach

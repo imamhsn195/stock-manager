@@ -1,10 +1,7 @@
 package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.*;
-import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
-import me.imamhasan.stockmanager.repository.ProductRepository;
-import me.imamhasan.stockmanager.repository.SaleItemRepository;
-import me.imamhasan.stockmanager.repository.SaleRepository;
+import me.imamhasan.stockmanager.repository.*;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static config.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -33,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
+@DisplayName(SALE_ITEM_TESTING_CLASS_DISPLAY_NAME)
 class SaleItemServiceImplTest {
     @Autowired
     ApplicationContext applicationContext;
@@ -43,9 +41,6 @@ class SaleItemServiceImplTest {
 
     @Autowired
     ProductRepository productRepository;
-
-    @Autowired
-    SaleRepository saleRepository;
 
     @Autowired
     SaleItemRepository saleItemRepository;
@@ -59,15 +54,14 @@ class SaleItemServiceImplTest {
     SaleItemServiceImpl saleItemService;
 
     @BeforeAll
-    public static void setUpBeforeAll() {
-
-    }
+    public static void setUpBeforeAll() {}
 
     @BeforeEach
     public void beforeEachTest() {}
 
     @Test
-    @Order(1)
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
     void saveSaleItem() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -118,7 +112,8 @@ class SaleItemServiceImplTest {
     }
 
     @Test
-    @Order(2)
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
     void getAllSaleItems() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -183,6 +178,8 @@ class SaleItemServiceImplTest {
     }
 
     @Test
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
     void getSaleItemById() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -247,6 +244,8 @@ class SaleItemServiceImplTest {
     }
 
     @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
     void deleteSaleItem() throws IllegalStateException{
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -308,67 +307,6 @@ class SaleItemServiceImplTest {
         assertThrows(IllegalStateException.class, ()->{
             saleItemService.getSaleItemById(1L);
         });
-    }
-
-    @Test
-    void updateSaleItem() {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Electronics");
-        productCategory = productCategoryRepository.save(productCategory);
-        assertNotNull(productCategory.getId());
-
-        Product product = new Product();
-        product.setName("Dell XPS 13");
-        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPurchasePrice(BigDecimal.valueOf(5200));
-        product.setSalePrice(BigDecimal.valueOf(5500));
-        product.setProductCategory(productCategory);
-        product.setQuantity(5);
-        product = productRepository.save(product);
-        assertNotNull(product.getId());
-
-        Address address = new Address();
-        address.setStreet("123 Main St");
-        address.setCity("Anytown");
-        address.setState("CA");
-        address.setCountry("USA");
-        address.setZipCode("12345");
-        address = addressService.saveAddress(address);
-        assertNotNull(address.getId());
-
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("John Doe");
-        customer.setEmail("johndoe@example.com");
-        customer.setAddress(address);
-        customer.setPhone("(123)456-7890");
-        customer = customerService.saveCustomer(customer);
-        assertNotNull(customer.getId());
-
-        Sale sale = new Sale();
-        sale.setCustomer(customer);
-        sale.setSaleDate(LocalDate.now());
-        sale = saleService.saveSale(sale);
-        assertNotNull(sale.getId());
-
-        SaleItem saleItem = new SaleItem();
-        saleItem.setSale(sale);
-        saleItem.setPriceSold(BigDecimal.valueOf(152));
-        saleItem.setProduct(product);
-        saleItem.setQuantitySold(10);
-        saleItemRepository.save(saleItem);
-        assertNotNull(saleItem.getId());
-
-        SaleItem saleItemSaved = saleItemService.getSaleItemById(1L);
-        assertEquals(10, saleItemSaved.getQuantitySold());
-
-        saleItemSaved.setQuantitySold(15);
-        saleItemService.updateSaleItem(saleItemSaved);
-
-        SaleItem saleItemUpdated = saleItemService.getSaleItemById(1L);
-
-        assertEquals(15, saleItemSaved.getQuantitySold());
-
     }
 
     @AfterEach

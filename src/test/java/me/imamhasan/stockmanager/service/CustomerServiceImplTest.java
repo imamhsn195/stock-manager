@@ -3,11 +3,7 @@ package me.imamhasan.stockmanager.service;
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.model.Customer;
 import me.imamhasan.stockmanager.repository.CustomerRepository;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,6 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 
+import static config.TestConstants.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -31,7 +30,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class CustomerServiceImplTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName(CUSTOMER_TESTING_CLASS_DISPLAY_NAME)
+class CustomerServiceImplTest {
 
     @Autowired
     ApplicationContext applicationContext;
@@ -48,6 +49,8 @@ public class CustomerServiceImplTest {
     @BeforeEach
     public void beforeEachTest() {}
     @Test
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
     public void testSaveCustomer() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -72,6 +75,8 @@ public class CustomerServiceImplTest {
     }
 
     @Test
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
     public void testFindAllCustomers() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -97,6 +102,33 @@ public class CustomerServiceImplTest {
     }
 
     @Test
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
+    public void getCustomerByIdTest() {
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+        addressService.saveAddress(address);
+
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setName("John Doe");
+        customer.setEmail("johndoe@example.com");
+        customer.setPhone("(123)456-7890");
+        assertNotNull(address.getId());
+        customer.setAddress(address);
+        customerService.saveCustomer(customer);
+
+        Customer customerSaved = customerService.getCustomerById(1L);
+        assertNotNull(customerSaved);
+    }
+
+    @Test
+    @Order(UPDATE_RECORD_TESTING_ORDER)
+    @DisplayName(UPDATE_RECORD_TESTING_DISPLAY_NAME)
     public void testUpdateCustomer() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -139,6 +171,8 @@ public class CustomerServiceImplTest {
     }
 
     @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
     public void testDeleteCustomer() {
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -162,11 +196,10 @@ public class CustomerServiceImplTest {
         });
     }
     @AfterEach
-    public void clearDatabase() {
+    public void setUpAfterEach() {
         customerRepository.deleteAll();
-        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE customer ALTER COLUMN id RESTART WITH 1");
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE customers ALTER COLUMN id RESTART WITH 1");
     }
-
     @AfterAll
     public static void setUpAfterAll(){}
 }

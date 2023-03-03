@@ -2,7 +2,6 @@ package me.imamhasan.stockmanager.service;
 
 import me.imamhasan.stockmanager.model.Address;
 import me.imamhasan.stockmanager.repository.AddressRepository;
-import org.junit.Test;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static config.TestConstants.*;
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -28,7 +28,9 @@ import static org.junit.Assert.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class AddressServiceTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName(ADDRESS_TESTING_CLASS_DISPLAY_NAME)
+class AddressServiceTest {
     @Autowired
     ApplicationContext applicationContext;
     @Autowired
@@ -40,7 +42,29 @@ public class AddressServiceTest {
     @BeforeEach
     public void beforeEachTest() {}
     @Test
-    public void testFindAllAddresses() {
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
+    public void saveAddressTest() {
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+
+        Address savedAddress = addressService.saveAddress(address);
+
+        assertNotNull(savedAddress.getId());
+        assertEquals(address.getStreet(), savedAddress.getStreet());
+        assertEquals(address.getCity(), savedAddress.getCity());
+        assertEquals(address.getState(), savedAddress.getState());
+        assertEquals(address.getCountry(), savedAddress.getCountry());
+        assertEquals(address.getZipCode(), savedAddress.getZipCode());
+    }
+    @Test
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
+    public void getAllAddressesTest() {
         Address address1 = new Address();
         address1.setId(1L);
         address1.setStreet("123 Main St");
@@ -83,28 +107,10 @@ public class AddressServiceTest {
         assertEquals("USA", savedAddress2.getCountry());
         assertEquals("94102", savedAddress2.getZipCode());
     }
-
     @Test
-    public void testSaveAddress() {
-        Address address = new Address();
-        address.setStreet("123 Main St");
-        address.setCity("Anytown");
-        address.setState("CA");
-        address.setCountry("USA");
-        address.setZipCode("12345");
-
-        Address savedAddress = addressService.saveAddress(address);
-
-        assertNotNull(savedAddress.getId());
-        assertEquals(address.getStreet(), savedAddress.getStreet());
-        assertEquals(address.getCity(), savedAddress.getCity());
-        assertEquals(address.getState(), savedAddress.getState());
-        assertEquals(address.getCountry(), savedAddress.getCountry());
-        assertEquals(address.getZipCode(), savedAddress.getZipCode());
-    }
-
-    @Test
-    public void testGetAddressById() {
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
+    public void getAddressByIdTest() {
         Address address = new Address();
         address.setStreet("123 Main St");
         address.setCity("Anytown");
@@ -124,27 +130,10 @@ public class AddressServiceTest {
         assertEquals(address.getCountry(), retrievedAddress.getCountry());
         assertEquals(address.getZipCode(), retrievedAddress.getZipCode());
     }
-
     @Test
-    public void testDeleteAddress() throws IllegalStateException{
-        Address address = new Address();
-        address.setStreet("123 Main St");
-        address.setCity("Anytown");
-        address.setState("CA");
-        address.setCountry("USA");
-        address.setZipCode("12345");
-
-        Address savedAddress = addressService.saveAddress(address);
-
-        addressService.deleteAddress(savedAddress.getId());
-
-        assertThrows(IllegalStateException.class, () -> {
-            Address deletedAddress = addressService.getAddressById(savedAddress.getId());
-        });
-    }
-
-    @Test
-    public void testUpdateAddress() {
+    @Order(UPDATE_RECORD_TESTING_ORDER)
+    @DisplayName(UPDATE_RECORD_TESTING_DISPLAY_NAME)
+    public void updateAddressTest() {
         // Create a new address object
         Address address = new Address();
         address.setStreet("123 Main St");
@@ -177,12 +166,32 @@ public class AddressServiceTest {
         assertEquals("USA", updatedAddress.getCountry());
         assertEquals("67890", updatedAddress.getZipCode());
     }
+    @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
+    public void deleteAddressTest() throws IllegalStateException{
+        Address address = new Address();
+        address.setStreet("123 Main St");
+        address.setCity("Anytown");
+        address.setState("CA");
+        address.setCountry("USA");
+        address.setZipCode("12345");
+
+        Address savedAddress = addressService.saveAddress(address);
+
+        addressService.deleteAddress(savedAddress.getId());
+
+        assertThrows(IllegalStateException.class, () -> {
+            Address deletedAddress = addressService.getAddressById(savedAddress.getId());
+        });
+    }
+
     @AfterEach
-    public void clearDatabase() {
+    public void setUpAfterEach() {
         addressRepository.deleteAll();
-        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE address ALTER COLUMN id RESTART WITH 1");
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE addresses ALTER COLUMN id RESTART WITH 1");
     }
 
     @AfterAll
-    private void setUpAfterAll(){}
+    public static void setUpAfterAll(){}
 }

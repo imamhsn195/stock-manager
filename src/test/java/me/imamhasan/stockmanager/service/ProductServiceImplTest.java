@@ -4,19 +4,13 @@ import me.imamhasan.stockmanager.model.Product;
 import me.imamhasan.stockmanager.model.ProductCategory;
 import me.imamhasan.stockmanager.repository.ProductCategoryRepository;
 import me.imamhasan.stockmanager.repository.ProductRepository;
-import me.imamhasan.stockmanager.service.ProductServiceImpl;
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static config.TestConstants.*;
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -37,7 +32,8 @@ import static org.junit.Assert.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class ProductServiceImplTest {
+@DisplayName(PRODUCT_TESTING_CLASS_DISPLAY_NAME)
+class ProductServiceImplTest {
 
     @Autowired
     ApplicationContext applicationContext;
@@ -54,7 +50,36 @@ public class ProductServiceImplTest {
     public static void clearProductTable() {}
     @BeforeEach
     public void beforeEachTest() {}
+
     @Test
+    @Order(SAVE_RECORD_TESTING_ORDER)
+    @DisplayName(SAVE_RECORD_TESTING_DISPLAY_NAME)
+    public void testSaveProduct() {
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setName("Electronics");
+        productCategoryRepository.save(productCategory);
+
+        Product product = new Product();
+        product.setName("Dell XPS 13");
+        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
+        product.setPurchasePrice(BigDecimal.valueOf(5200));
+        product.setSalePrice(BigDecimal.valueOf(5500));
+        product.setQuantity(5);
+        product.setProductCategory(productCategory);
+        Product savedProduct = productService.addProduct(product);
+
+        Assert.assertNotNull(savedProduct.getId());
+        Assert.assertNotNull(savedProduct.getProductCategory().getId());
+
+        Assert.assertEquals(product.getName(), savedProduct.getName());
+        Assert.assertEquals(new BigDecimal(String.valueOf(product.getPurchasePrice())), new BigDecimal(savedProduct.getPurchasePrice().toString()));
+        Assert.assertEquals(new BigDecimal(String.valueOf(product.getSalePrice())), new BigDecimal(savedProduct.getSalePrice().toString()));
+        Assert.assertEquals(product.getId().toString(), savedProduct.getId().toString());
+    }
+
+    @Test
+    @Order(GET_SAVED_RECORDS_TESTING_ORDER)
+    @DisplayName(GET_RECORD_TESTING_DISPLAY_NAME)
     public void testGetAllProducts() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -108,6 +133,8 @@ public class ProductServiceImplTest {
     }
 
     @Test
+    @Order(GET_RECORD_BY_ID_TESTING_ORDER)
+    @DisplayName(GET_RECORD_BY_ID_TESTING_DISPLAY_NAME)
     public void testGetProductById() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -131,36 +158,16 @@ public class ProductServiceImplTest {
         Assert.assertEquals(new BigDecimal("5500"), new BigDecimal(product.getSalePrice().toString()));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testGetProductByIdNotFound() {
-        productService.getProductById(999L);
+    @Test()
+    public void testGetProductByIdNotFound() throws IllegalStateException {
+        assertThrows(IllegalStateException.class, ()->{
+            productService.getProductById(999L);
+        });
     }
 
     @Test
-    public void testAddProduct() {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setName("Electronics");
-        productCategoryRepository.save(productCategory);
-
-        Product product = new Product();
-        product.setName("Dell XPS 13");
-        product.setDescription("The Dell XPS 13 is a high-end ultrabook laptop designed for performance and portability");
-        product.setPurchasePrice(BigDecimal.valueOf(5200));
-        product.setSalePrice(BigDecimal.valueOf(5500));
-        product.setQuantity(5);
-        product.setProductCategory(productCategory);
-        Product savedProduct = productService.addProduct(product);
-
-        Assert.assertNotNull(savedProduct.getId());
-        Assert.assertNotNull(savedProduct.getProductCategory().getId());
-
-        Assert.assertEquals(product.getName(), savedProduct.getName());
-        Assert.assertEquals(new BigDecimal(String.valueOf(product.getPurchasePrice())), new BigDecimal(savedProduct.getPurchasePrice().toString()));
-        Assert.assertEquals(new BigDecimal(String.valueOf(product.getSalePrice())), new BigDecimal(savedProduct.getSalePrice().toString()));
-        Assert.assertEquals(product.getId().toString(), savedProduct.getId().toString());
-    }
-
-    @Test
+    @Order(UPDATE_RECORD_TESTING_ORDER)
+    @DisplayName(UPDATE_RECORD_TESTING_DISPLAY_NAME)
     public void testUpdateProduct() {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -209,17 +216,20 @@ public class ProductServiceImplTest {
         assertEquals(Integer.valueOf("10"), savedProduct.getQuantity());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testUpdateProductNotFound() {
+    @Test()
 
+    public void testUpdateProductNotFound() throws IllegalStateException {
         Long id = 100L;
         Product product = new Product();
         product.setId(id);
-        productService.updateProduct(product);
-
+        assertThrows(IllegalStateException.class, ()-> {
+            productService.updateProduct(product);
+        });
     }
 
     @Test
+    @Order(DELETE_RECORD_TESTING_ORDER)
+    @DisplayName(DELETE_RECORD_TESTING_DISPLAY_NAME)
     public void testDeleteProduct() throws IllegalStateException{
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName("Electronics");
@@ -243,15 +253,17 @@ public class ProductServiceImplTest {
         });
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testDeleteProductNotFound() {
-        productService.deleteProduct(999L);
+    @Test()
+    public void testDeleteProductNotFound() throws IllegalStateException {
+        assertThrows(IllegalStateException.class, ()-> {
+            productService.deleteProduct(999L);
+        });
     }
 
     @AfterEach
-    public void clearDatabase() {
+    public void setUpAfterEach() {
         productRepository.deleteAll();
-        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE product ALTER COLUMN id RESTART WITH 1");
+        applicationContext.getBean(JdbcTemplate.class).execute("ALTER TABLE products ALTER COLUMN id RESTART WITH 1");
     }
 
     @AfterAll
