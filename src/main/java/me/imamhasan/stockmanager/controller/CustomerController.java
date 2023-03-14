@@ -19,6 +19,7 @@ import static me.imamhasan.stockmanager.config.SwaggerPayloads.*;
 @RequestMapping("/api/customers")
 @Api(value = "Customer Management System", tags = { "Customers" }, description = "Operations pertaining to customer in Customer Management System")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 public class CustomerController {
 
     private final CustomerServiceImpl customerService;
@@ -32,10 +33,12 @@ public class CustomerController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     public Page<Customer> getAllCustomers(
+            @RequestParam(defaultValue = "true") boolean paginated,
             @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
             @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
             @ApiParam(value = "Sort field", example = "name") @RequestParam(defaultValue = "name") String sortBy) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+        if (!paginated) { pageable = Pageable.unpaged(); }
         return customerService.getAllCustomers(pageable);
     }
 

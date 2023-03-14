@@ -22,6 +22,7 @@ import static me.imamhasan.stockmanager.config.SwaggerPayloads.ADDRESS_PUT_REQUE
 @RequestMapping("/api/addresses")
 @Api(value = "Address Management System", tags = { "Addresses" }, description = "Operations pertaining to address in Address Management System")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 public class AddressController {
     private final AddressServiceImpl addressService;
 
@@ -35,10 +36,12 @@ public class AddressController {
     })
 
     public Page<Address> getAllAddresses(
+        @RequestParam(defaultValue = "true") boolean paginated,
         @ApiParam(value = "Page number", example = "0") @RequestParam(defaultValue = "0") int pageNumber,
         @ApiParam(value = "Page size", example = "10") @RequestParam(defaultValue = "10") int pageSize,
-        @ApiParam(value = "Sort field", example = "city") @RequestParam(defaultValue = "id") String sortBy) {
-    Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        @ApiParam(value = "Sort field", example = "city") @RequestParam(required = false, defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+        if (!paginated) { pageable = Pageable.unpaged();}
     return addressService.getAllAddresses(pageable);
 }
     @GetMapping("/{id}")
